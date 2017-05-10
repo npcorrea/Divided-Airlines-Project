@@ -1,11 +1,11 @@
-//End: Game over screen, display score, replay button
-var End = function(game) {};
-End.prototype =
+//Win: Winning game over screen, replay button
+var Win = function(game) {};
+Win.prototype =
 {
     create: function()
     {
         //Prompt for Replay
-        game.add.text(game.world.centerX -55, game.world.centerY +60, "Restart?",
+        game.add.text(230, 200, "You won: Restart?",
             {font: '30px Arial', fill: '#ffffff'});
 
         //Restart Button
@@ -13,7 +13,8 @@ End.prototype =
         restartButton.anchor.x = 0.5;
         restartButton.anchor.y = 0.5;
 
-        game.stage.backgroundColor = "#770000";
+        //Background color, because color is good
+        game.stage.backgroundColor = "#007700";
     },
     Again: function()
     {
