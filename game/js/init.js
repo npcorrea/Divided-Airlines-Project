@@ -7,17 +7,35 @@ var player;
 var playButton;
 var restartButton;
 var door;
+var enemy;
+var sAttack;
+var isAttacking = false;
 
 //Load game states
-game.state.add('Preloader', Preloader);
+game.state.add('Load', Load);
 game.state.add('MainMenu', MainMenu);
 game.state.add('Level1', Level1);
-game.state.add('End', End);
+game.state.add('Win', Win);
+game.state.add('Lose', Lose);
 
 //Start Preloader
-game.state.start('Preloader');
+game.state.start('Load');
 
+//Level transition
 function transport ()
 {
-    game.state.start('End');
+    game.state.start('Win');
 };
+
+//Combat resolution
+function attack ()
+{
+    if (isAttacking)
+    {
+        enemy.kill();
+    }
+    else
+    {
+        game.state.start('Lose');
+    }
+}
