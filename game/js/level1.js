@@ -4,8 +4,13 @@ Level1.prototype =
 {
     create: function()
     {
+        //Make it rock in here
+        game.music = game.add.audio('music');
+        game.music.play('', 1, 1, true);
+        game.music.volume = 0.2;
+
         //Set some boundries
-        game.world.setBounds(0,0,2400,600);
+        game.world.setBounds(0,0,4000,600);
 
         //Create Objects and their Physics
         game.background = game.add.image(0,0,'background');
@@ -44,6 +49,7 @@ Level1.prototype =
         //Input manager
         cursors = game.input.keyboard.createCursorKeys();
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
     },
     update: function()
     {
@@ -104,9 +110,9 @@ Level1.prototype =
         }
 
         //Floor Constraints
-        if (player.body.y < 400)
+        if (player.body.y < 360)
         {
-            player.body.y = 400;
+            player.body.y = 360;
         }
 
         //Activate rage mode on button press (attack)
@@ -121,7 +127,13 @@ Level1.prototype =
             isAttacking = false;
         }
 
-        if (player.body.x < 1250 && player.body.x > 1200)
+        if (lAttack.justPressed(lAttack))
+        {
+            //Summon Weapon
+
+        }
+
+        if (player.body.x < 1200 && player.body.x > 1185)
         {
             lock1 = true;
         }
@@ -137,16 +149,16 @@ Level1.prototype =
                 player.body.x = 800;
             }
 
-            if (player.body.x > 1600)
+            if (player.body.x > 1570)
             {
-                player.body.x = 1600;
+                player.body.x = 1570;
             }
 
             //Create enemies
             spawnEnemies();
 
             //Release lock
-            if (aliveEnemies == 0)
+            if (aliveEnemies == 0 && lock1Spawn)
             {
                 lock1 = false;
                 lock1Pending = false;

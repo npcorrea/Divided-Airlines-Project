@@ -2,7 +2,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO);
 
 //Global Variables
-var DeathBars;
 var player;
 var playButton;
 var restartButton;

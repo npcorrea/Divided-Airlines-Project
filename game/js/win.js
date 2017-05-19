@@ -4,6 +4,8 @@ Win.prototype =
 {
     create: function()
     {
+        game.music.stop();
+        
         //Prompt for Replay
         game.add.text(230, 200, "You won: Restart?",
             {font: '30px Arial', fill: '#ffffff'});
