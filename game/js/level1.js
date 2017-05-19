@@ -4,8 +4,13 @@ Level1.prototype =
 {
     create: function()
     {
+        //Make it rock in here
+        game.music = game.add.audio('music');
+        game.music.play('', 1, 1, true);
+        game.music.volume = 0.2;
+
         //Set some boundries
-        game.world.setBounds(0,0,2400,600);
+        game.world.setBounds(0,0,4000,600);
 
         //Create Objects and their Physics
         game.background = game.add.image(0,0,'background');
@@ -27,7 +32,6 @@ Level1.prototype =
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
-        player.body.gravity.y = 100;
         player.body.collideWorldBounds = true;
 
         //Make Enemy
@@ -41,12 +45,11 @@ Level1.prototype =
 
         //Enemy properties
         game.physics.arcade.enable(enemy);
-        enemy.body.gravity.y = 100;
-        enemy.body.collideWorldBounds = true;
 
         //Input manager
         cursors = game.input.keyboard.createCursorKeys();
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
     },
     update: function()
     {
@@ -57,23 +60,59 @@ Level1.prototype =
         //Enemy move toward player
         game.physics.arcade.moveToObject(enemy, player, 100);
 
-        //Accend and Descend Controls
+        //Movement Controls
         player.body.velocity.x = 0; //Default
+        player.body.velocity.y = 0;
 
+        if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
+        {
+            player.animations.stop();
+        }
         if (cursors.left.isDown) //Left
         {
             player.body.velocity.x = -150;
             player.animations.play('left');
+            isLeft = true;
+            isRight = false;
         }
-        else if (cursors.right.isDown) //Right
+        if (cursors.right.isDown) //Right
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
+            isRight = true;
+            isLeft = false;
         }
-        else //Stop
+        if (cursors.up.isDown) //Up
         {
-            player.animations.stop();
-            player.frame = 4;
+            player.body.velocity.y = -150;
+
+            if (isRight)
+            {
+                player.animations.play('right');
+            }
+            else
+            {
+                player.animations.play('left');
+            }
+        }
+        if (cursors.down.isDown) //Down
+        {
+            player.body.velocity.y = 150;
+
+            if (isRight)
+            {
+                player.animations.play('right');
+            }
+            else
+            {
+                player.animations.play('left');
+            }
+        }
+
+        //Floor Constraints
+        if (player.body.y < 360)
+        {
+            player.body.y = 360;
         }
 
         //Activate rage mode on button press (attack)
@@ -86,6 +125,48 @@ Level1.prototype =
         {
             player.tint = 0xFFFFFF;
             isAttacking = false;
+        }
+
+        if (lAttack.justPressed(lAttack))
+        {
+            //Summon Weapon
+
+        }
+
+        if (player.body.x < 1200 && player.body.x > 1185)
+        {
+            lock1 = true;
+        }
+
+        //Screen Lock 1
+        if (lock1 && lock1Pending)
+        {
+            game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
+
+            //Lock bounds
+            if (player.body.x < 800)
+            {
+                player.body.x = 800;
+            }
+
+            if (player.body.x > 1570)
+            {
+                player.body.x = 1570;
+            }
+
+            //Create enemies
+            spawnEnemies();
+
+            //Release lock
+            if (aliveEnemies == 0 && lock1Spawn)
+            {
+                lock1 = false;
+                lock1Pending = false;
+            }
+        }
+        else if (!lock1)
+        {
+            game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
     }
 };
