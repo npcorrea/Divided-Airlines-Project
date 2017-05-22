@@ -5,7 +5,8 @@ Load.prototype =
     preload: function()
     {
         //Load Non-Atlas Images
-    	game.load.image('background', 'assets/img/tempBack.png');
+    	game.load.image('background1', 'assets/img/tempBack1.png');
+        game.load.image('background2', 'assets/img/tempBack2.png');
 
         //Load Sprites (eventually Atlas)
         game.load.image('play', 'assets/img/Play.png');
