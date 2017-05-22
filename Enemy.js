@@ -1,6 +1,0 @@
- //Enemy Prefab
- 
- function Enemy()
- {
-    
- }
