@@ -1,22 +1,22 @@
 //Game: Core game loop
-var Level1 = function(game) {};
-Level1.prototype =
+var Level1Part1 = function(game) {};
+Level1Part1.prototype =
 {
     create: function()
     {
         //Make it rock in here
         game.music = game.add.audio('music');
-        game.music.play('', 1, 1, true);
+        //game.music.play('', 1, 1, true);
         game.music.volume = 0.2;
 
         //Set some boundries
-        game.world.setBounds(0,0,4000,600);
+        game.world.setBounds(0,0,1600,600);
 
         //Create Objects and their Physics
-        game.background = game.add.image(0,0,'background');
+        game.background = game.add.image(0,0,'background1');
 
         //Create door that triggers level transition
-        door = game.add.sprite(game.world.width - 65, game.world.height - 100, 'door');
+        door = game.add.sprite(game.world.width - 165, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
@@ -50,12 +50,13 @@ Level1.prototype =
         cursors = game.input.keyboard.createCursorKeys();
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
+        unlock = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     },
     update: function()
     {
         //Collision and overlap detection
         game.physics.arcade.overlap(player, enemy, attack, null, this);
-        game.physics.arcade.overlap(player, door, transport, null, this);
+        game.physics.arcade.overlap(player, door, transport1, null, this);
 
         //Enemy move toward player
         game.physics.arcade.moveToObject(enemy, player, 100);
@@ -133,7 +134,12 @@ Level1.prototype =
 
         }
 
-        if (player.body.x < 1200 && player.body.x > 1185)
+        if (unlock.isDown)
+        {
+            aliveEnemies = 0;
+        }
+
+        if ((player.body.x < 1200 && player.body.x > 1185) && lock1Pending)
         {
             lock1 = true;
         }
@@ -158,7 +164,7 @@ Level1.prototype =
             spawnEnemies();
 
             //Release lock
-            if (aliveEnemies == 0 && lock1Spawn)
+            if (aliveEnemies == 0 && !lock1Spawn)
             {
                 lock1 = false;
                 lock1Pending = false;
