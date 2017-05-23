@@ -39,3 +39,8 @@ function attack ()
         game.state.start('Lose');
     }
 }
+
+//Call this to go to the losing state
+function goToLoseState(){
+  game.state.start('Lose');
+}

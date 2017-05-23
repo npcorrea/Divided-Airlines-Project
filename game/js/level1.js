@@ -10,6 +10,16 @@ Level1.prototype =
         //Create Objects and their Physics
         game.background = game.add.image(0,0,'background');
 
+        //Create a custom timer
+        levelTimer = game.time.create();
+
+        //Create a delayed event 30s from now
+        //Change later. 30s for testing
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *20, this.endLevelTimer, this);
+
+        //Start the timer
+        levelTimer.start();
+
         //Create door that triggers level transition
         door = game.add.sprite(game.world.width - 65, game.world.height - 100, 'door');
         game.physics.arcade.enable(door);
@@ -87,5 +97,31 @@ Level1.prototype =
             player.tint = 0xFFFFFF;
             isAttacking = false;
         }
-    }
-};
+    },
+    //This is for printing out time
+    render: function() {
+
+        //Prints out the timer
+        if (levelTimer.running) {
+                game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#ffffff");
+            }
+        //If the timer reaches 0, print this out
+            else {
+                //goToLoseState();
+                //game.state.start('Lose');
+                //game.debug.text("Time's up!", 32,32, '#ff0000');
+            }
+        },
+        endLevelTimer: function() {
+            //This stops the timer when the delayed event triggers
+            levelTimer.stop();
+            //game.debug.text("Time's up!", 32,32, '#ff0000');
+            goToLoseState();
+        },
+        formatLevelTime: function(s) {
+            //This converts the seconds (s) to a nicely formatted and padded time string
+            var minutes = "0" + Math.floor(s / 60);
+            var seconds = "0" + (s - minutes * 60);
+            return minutes.substr(-2) + ":" + seconds.substr(-2);
+        }
+    };
