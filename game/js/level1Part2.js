@@ -5,18 +5,18 @@ Level1Part2.prototype =
     create: function()
     {
         //Set some boundries
-        game.world.setBounds(0,0,2400,600);
+        game.world.setBounds(0,0,3200,600);
 
         //Create Objects and their Physics
         game.background = game.add.image(0,0,'background2');
 
         //Create door that triggers level transition
-        door = game.add.sprite(game.world.width - 165, game.world.height - 280, 'door');
+        door = game.add.sprite(0, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
         //Make Player
-        player = game.add.sprite(16, game.world.height - 24, 'dude');
+        player = game.add.sprite(1216, game.world.height - 24, 'dude');
         player.anchor.x = 0.5;
         player.anchor.y = 0.5;
         game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT, 0.75, 0.75);

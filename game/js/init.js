@@ -67,6 +67,7 @@ function spawnEnemies()
     {
         for (let i = 0; i < waveSize; i++)
         {
+            //enemy = new 
             aliveEnemies += 1;
         }
         lock1Spawn = false;
