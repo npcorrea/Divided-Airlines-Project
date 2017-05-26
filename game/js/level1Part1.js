@@ -34,56 +34,48 @@ Level1Part1.prototype =
         game.physics.arcade.enable(player); //Physics for Player
         player.body.collideWorldBounds = true;
 
-        //Make Enemy
-        enemy = game.add.sprite(612, game.world.height - 11, 'star');
-        enemy.anchor.x = 0.5;
-        enemy.anchor.y = 0.5;
-
-        //Enemy Animation (Do this later)
-        //enemy.animations.add('eLeft', [0,1], 10, true);
-        //enemy.animations.add('eRight', [2,3], 10, true);
-
-        //Enemy properties
-        game.physics.arcade.enable(enemy);
-
         //Input manager
         cursors = game.input.keyboard.createCursorKeys();
+
+        //Attack Keys
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
-        unlock = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     },
     update: function()
     {
         //Collision and overlap detection
-        game.physics.arcade.overlap(player, enemy, attack, null, this);
         game.physics.arcade.overlap(player, door, transport1, null, this);
 
-        //Enemy move toward player
-        game.physics.arcade.moveToObject(enemy, player, 100);
-
         //Movement Controls
-        player.body.velocity.x = 0; //Default
+        //Defaults
+        player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
         {
             player.animations.stop();
         }
-        if (cursors.left.isDown) //Left
+
+        //Left
+        if (cursors.left.isDown)
         {
             player.body.velocity.x = -150;
             player.animations.play('left');
             isLeft = true;
             isRight = false;
         }
-        if (cursors.right.isDown) //Right
+
+        //Right
+        if (cursors.right.isDown)
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
             isRight = true;
             isLeft = false;
         }
-        if (cursors.up.isDown) //Up
+
+        //Up
+        if (cursors.up.isDown)
         {
             player.body.velocity.y = -150;
 
@@ -96,7 +88,9 @@ Level1Part1.prototype =
                 player.animations.play('left');
             }
         }
-        if (cursors.down.isDown) //Down
+
+        //Down
+        if (cursors.down.isDown)
         {
             player.body.velocity.y = 150;
 
@@ -116,7 +110,7 @@ Level1Part1.prototype =
             player.body.y = 360;
         }
 
-        //Activate rage mode on button press (attack)
+        //Activate close-range attack
         if (sAttack.isDown)
         {
             player.tint = 0x770000;
@@ -128,25 +122,22 @@ Level1Part1.prototype =
             isAttacking = false;
         }
 
+        //Activate long-range attack
         if (lAttack.justPressed(lAttack))
         {
             //Summon Weapon
-
         }
 
-        if (unlock.isDown)
-        {
-            aliveEnemies = 0;
-        }
-
+        //Screen Lock 1 trigger
         if ((player.body.x < 1200 && player.body.x > 1185) && lock1Pending)
         {
             lock1 = true;
         }
 
         //Screen Lock 1
-        if (lock1 && lock1Pending)
+        if (lock1)
         {
+            //Camera lock
             game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
 
             //Lock bounds
@@ -160,18 +151,24 @@ Level1Part1.prototype =
                 player.body.x = 1570;
             }
 
-            //Create enemies
-            spawnEnemies();
+            //Create enemies (leftXMin, leftXMax, rightXMin, rightXMax)
+            if (lock1Pending)
+            {
+                spawnEnemies(0, 800, 1600, 2400);
+                lock1Pending = false;
+            }
+
+            game.physics.arcade.collide(spawnGroup, spawnGroup);
 
             //Release lock
             if (aliveEnemies == 0 && !lock1Spawn)
             {
                 lock1 = false;
-                lock1Pending = false;
             }
         }
         else if (!lock1)
         {
+            //Release camera
             game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
     }

@@ -11,7 +11,7 @@ Level1Part2.prototype =
         game.background = game.add.image(0,0,'background2');
 
         //Create door that triggers level transition
-        door = game.add.sprite(game.world.width - 165, game.world.height - 280, 'door');
+        door = game.add.sprite(0, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
@@ -31,39 +31,46 @@ Level1Part2.prototype =
 
         //Input manager
         cursors = game.input.keyboard.createCursorKeys();
+
+        //Attack Keys
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
-        unlock = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     },
     update: function()
     {
         //Collision and overlap detection
-        game.physics.arcade.overlap(player, enemy, attack, null, this);
         game.physics.arcade.overlap(player, door, transport2, null, this);
 
         //Movement Controls
-        player.body.velocity.x = 0; //Default
+        //Defaults
+        player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
         {
             player.animations.stop();
         }
-        if (cursors.left.isDown) //Left
+
+        //Left
+        if (cursors.left.isDown)
         {
             player.body.velocity.x = -150;
             player.animations.play('left');
             isLeft = true;
             isRight = false;
         }
-        if (cursors.right.isDown) //Right
+
+        //Right
+        if (cursors.right.isDown)
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
             isRight = true;
             isLeft = false;
         }
-        if (cursors.up.isDown) //Up
+
+        //Up
+        if (cursors.up.isDown)
         {
             player.body.velocity.y = -150;
 
@@ -76,7 +83,9 @@ Level1Part2.prototype =
                 player.animations.play('left');
             }
         }
-        if (cursors.down.isDown) //Down
+
+        //Down
+        if (cursors.down.isDown)
         {
             player.body.velocity.y = 150;
 
@@ -96,7 +105,7 @@ Level1Part2.prototype =
             player.body.y = 360;
         }
 
-        //Activate rage mode on button press (attack)
+        //Activate close-range attack
         if (sAttack.isDown)
         {
             player.tint = 0x770000;
@@ -108,25 +117,56 @@ Level1Part2.prototype =
             isAttacking = false;
         }
 
+        //Activate long-range attack
         if (lAttack.justPressed(lAttack))
         {
             //Summon Weapon
-
         }
 
-        if (unlock.isDown)
+        //Screen Lock 2 trigger
+        if ((player.body.x < 400 && player.body.x > 385) && lock2Pending)
         {
-            aliveEnemies = 0;
+            lock2 = true;
         }
 
-        if ((player.body.x < 1200 && player.body.x > 1185) && lock1Pending)
+        //Screen Lock 2
+        if (lock2)
         {
-            lock1 = true;
+            //Camera lock
+            game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
+
+            //Lock bounds
+            if (player.body.x > 770)
+            {
+                player.body.x = 770
+            }
+
+            //Create enemies (leftXMin, leftXMax, rightXMin, rightXMax)
+            if (lock2Pending)
+            {
+                spawnEnemies(-800, 0, 800, 1600);
+                lock2Pending = false;
+            }
+
+            game.physics.arcade.collide(spawnGroup, spawnGroup);
+
+            //Release lock
+            if (aliveEnemies == 0 && !lock2Spawn)
+            {
+                lock2 = false;
+            }
         }
 
-        //Screen Lock 1
-        if (lock1 && lock1Pending)
+        //Screen Lock 3 trigger
+        if ((player.body.x < 1200 && player.body.x > 1185) && lock3Pending)
         {
+            lock3 = true;
+        }
+
+        //Screen Lock 3
+        if (lock3)
+        {
+            //Camera lock
             game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
 
             //Lock bounds
@@ -140,19 +180,102 @@ Level1Part2.prototype =
                 player.body.x = 1570;
             }
 
-            //Create enemies
-            spawnEnemies();
+            //Create enemies (leftXMin, leftXMax, rightXMin, rightXMax)
+            if (lock3Pending)
+            {
+                spawnEnemies(0, 800, 1600, 2400);
+                lock3Pending = false;
+            }
+
+            game.physics.arcade.collide(spawnGroup, spawnGroup);
 
             //Release lock
-            if (aliveEnemies == 0 && !lock1Spawn)
+            if (aliveEnemies == 0 && !lock3Spawn)
             {
-                lock1 = false;
-                lock1Pending = false;
+                lock3 = false;
             }
         }
-        else if (!lock1)
+
+        //Screen Lock 4 trigger
+        if ((player.body.x < 2000 && player.body.x > 1985) && lock4Pending)
         {
+            lock4 = true;
+        }
+
+        //Screen Lock 4
+        if (lock4)
+        {
+            //Camera lock
+            game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
+
+            //Lock bounds
+            if (player.body.x < 1600)
+            {
+                player.body.x = 1600;
+            }
+
+            if (player.body.x > 2370)
+            {
+                player.body.x = 2370;
+            }
+
+            //Create enemies (leftXMin, leftXMax, rightXMin, rightXMax)
+            if (lock4Pending)
+            {
+                spawnEnemies(800, 1600, 2400, 3200);
+                lock4Pending = false;
+            }
+
+            game.physics.arcade.collide(spawnGroup, spawnGroup);
+
+            //Release lock
+            if (aliveEnemies == 0 && !lock4Spawn)
+            {
+                lock4 = false;
+                key = true;
+            }
+        }
+
+        //Screen Lock Boss trigger
+        if ((player.body.x < 350) && lockBossPending && key)
+        {
+            lockBoss = true;
+        }
+
+        //Screen Lock Boss
+        if (lockBoss)
+        {
+            //Camera lock
+            game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
+
+            //Lock bounds
+            if (player.body.x > 770)
+            {
+                player.body.x = 770
+            }
+
+            //Create Boss
+            if (lockBossPending)
+            {
+                spawnBoss();
+                lockBossPending = false;
+            }
+
+            game.physics.arcade.collide(spawnGroup, spawnGroup);
+
+            //Release lock
+            if (aliveEnemies == 0 && !lockBossSpawn)
+            {
+                lockBoss = false;
+            }
+        }
+
+        if (!lock2 && !lock3 && !lock4 && !lockBoss)
+        {
+            //Release camera
             game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
+
+
     }
 };
