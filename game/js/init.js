@@ -11,12 +11,31 @@ var sAttack;
 var isAttacking = false;
 var isLeft = false;
 var isRight = false;
+var spawnGroup;
+var key = false;
+
 var waveSize = 5;
 var aliveEnemies = 0;
 
 var lock1 = false;
 var lock1Pending = true;
 var lock1Spawn = true;
+
+var lock2 = false;
+var lock2Pending = true;
+var lock2Spawn = true;
+
+var lock3 = false;
+var lock3Pending = true;
+var lock3Spawn = true;
+
+var lock4 = false;
+var lock4Pending = true;
+var lock4Spawn = true;
+
+var lockBoss = false;
+var lockBossPending = true;
+var lockBossSpawn = true;
 
 //Load game states
 game.state.add('Load', Load);
@@ -28,48 +47,3 @@ game.state.add('Lose', Lose);
 
 //Start Preloader
 game.state.start('Load');
-
-//Level transition
-function transport1 ()
-{
-    if (!lock1)
-    {
-        game.state.start('Level1Part2');
-    }
-};
-
-function transport2 ()
-{
-    if (!lock1)
-    {
-        game.state.start('Win');
-    }
-};
-
-//Combat resolution
-function attack ()
-{
-    if (isAttacking)
-    {
-        enemy.kill();
-        //aliveEnemies -= 1;
-    }
-    else
-    {
-        game.state.start('Lose');
-    }
-}
-
-//Spawn a wave of enemies
-function spawnEnemies()
-{
-    if (lock1Spawn)
-    {
-        for (let i = 0; i < waveSize; i++)
-        {
-            //enemy = new 
-            aliveEnemies += 1;
-        }
-        lock1Spawn = false;
-    }
-}
