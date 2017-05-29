@@ -4,18 +4,28 @@ Load.prototype =
 {
     preload: function()
     {
-        //Load Non-Atlas Images
-    	game.load.image('background1', 'assets/img/tempBack1.png');
-        game.load.image('background2', 'assets/img/tempBack2.png');
+        //Load Backgrounds
+        game.load.image('MenuBG', 'assets/img/TitleArt.png');
+    	game.load.image('background1', 'assets/img/Jet_Bridge.png');
+        game.load.image('background2', 'assets/img/Plane.png');
 
-        //Load Sprites (eventually Atlas)
+        //Load Sprites
         game.load.image('play', 'assets/img/Play.png');
         game.load.image('rewind', 'assets/img/Rewind.png');
         game.load.image('door', 'assets/img/TheBESTdoor.png');
-        game.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
-        game.load.image('star', 'assets/img/star.png');
+
+        //Load Spritesheets
+        game.load.spritesheet('doctor', 'assets/img/DoctorWalkSpriteSheet.png', 256, 256);
+
+        game.load.spritesheet('FA', 'assets/img/FAWalkAnimRight.png', 256, 256);
+        //game.load.spritesheet('FAAttack', 'assets/img/FAAttackAnimRight.png', );
+        game.load.spritesheet('SG', 'assets/img/SGWalkAnimRight.png', 256, 256);
+        //game.load.spritesheet('SGAttack', 'assets/img/SGAttackAnimRight.png', );
+
         game.load.image('BOSSstar', 'assets/img/BOSSstar.png');
         game.load.image('sword', 'assets/img/sword.png');
+
+        //Load Sounds
         game.load.audio('music', ['assets/audio/MK.mp3']);
     },
     create: function()
@@ -46,15 +56,15 @@ function transport2 ()
 };
 
 //Spawn a wave of enemies
-function spawnEnemies(leftXMin, leftXMax, rightXMin, rightXMax)
+function spawnEnemies(sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftYMin, leftYMax)
 {
     spawnGroup = game.add.group();
 
     //Left Spawn
     for (let i = 0; i < waveSize; i++)
     {
-        enemy = new Enemy(game, 'star', game.rnd.integerInRange(leftXMin,leftXMax),
-            game.rnd.integerInRange(400,600));
+        enemy = new Enemy(game, sprite, game.rnd.integerInRange(leftXMin,leftXMax),
+            game.rnd.integerInRange(leftYMin,leftYMax));
         game.add.existing(enemy);
         aliveEnemies += 1;
         spawnGroup.add(enemy);
@@ -63,7 +73,7 @@ function spawnEnemies(leftXMin, leftXMax, rightXMin, rightXMax)
     //Right Spawn
     for (let j = 0; j < waveSize; j++)
     {
-        enemy = new Enemy(game, 'star', game.rnd.integerInRange(rightXMin,rightXMax),
+        enemy = new Enemy(game, sprite, game.rnd.integerInRange(rightXMin,rightXMax),
             game.rnd.integerInRange(400,600));
         game.add.existing(enemy);
         aliveEnemies += 1;
@@ -95,7 +105,7 @@ function spawnEnemies(leftXMin, leftXMax, rightXMin, rightXMax)
 
 function spawnBoss()
 {
-    enemy = new Enemy(game, 'BOSSstar', game.rnd.integerInRange(-800, 0),
+    enemy = new Enemy(game, 'BOSSstar', game.rnd.integerInRange(-400, 0),
         game.rnd.integerInRange(400,600));
         game.add.existing(enemy);
         aliveEnemies += 1;

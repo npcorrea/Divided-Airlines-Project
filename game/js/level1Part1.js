@@ -21,17 +21,17 @@ Level1Part1.prototype =
         door.body.immovable = true;
 
         //Make Player
-        player = game.add.sprite(16, game.world.height - 24, 'dude');
+        player = game.add.sprite(128, game.world.height - 128, 'doctor');
         player.anchor.x = 0.5;
         player.anchor.y = 0.5;
         game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT, 0.75, 0.75);
 
         //Player Animation
-        player.animations.add('left', [0, 3], 10, true);
-        player.animations.add('right', [5, 8], 10, true);
+        player.animations.add('right', null, 13, true);
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
+        player.body.setSize(125, 230, 63, 10);
         player.body.collideWorldBounds = true;
 
         //Input manager
@@ -60,7 +60,8 @@ Level1Part1.prototype =
         if (cursors.left.isDown)
         {
             player.body.velocity.x = -150;
-            player.animations.play('left');
+            player.animations.play('right');
+            player.scale.x = -1;
             isLeft = true;
             isRight = false;
         }
@@ -70,6 +71,7 @@ Level1Part1.prototype =
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
+            player.scale.x = 1;
             isRight = true;
             isLeft = false;
         }
@@ -82,10 +84,12 @@ Level1Part1.prototype =
             if (isRight)
             {
                 player.animations.play('right');
+                player.scale.x = 1;
             }
             else
             {
-                player.animations.play('left');
+                player.animations.play('right');
+                player.scale.x = -1;
             }
         }
 
@@ -97,17 +101,19 @@ Level1Part1.prototype =
             if (isRight)
             {
                 player.animations.play('right');
+                player.scale.x = 1;
             }
             else
             {
-                player.animations.play('left');
+                player.animations.play('right');
+                player.scale.x = -1;
             }
         }
 
         //Floor Constraints
-        if (player.body.y < 360)
+        if (player.body.y < 185)
         {
-            player.body.y = 360;
+            player.body.y = 185;
         }
 
         //Activate close-range attack
@@ -129,7 +135,7 @@ Level1Part1.prototype =
         }
 
         //Screen Lock 1 trigger
-        if ((player.body.x < 1200 && player.body.x > 1185) && lock1Pending)
+        if ((player.body.x < 1200 && player.body.x > 1136) && lock1Pending)
         {
             lock1 = true;
         }
@@ -146,15 +152,10 @@ Level1Part1.prototype =
                 player.body.x = 800;
             }
 
-            if (player.body.x > 1570)
-            {
-                player.body.x = 1570;
-            }
-
-            //Create enemies (leftXMin, leftXMax, rightXMin, rightXMax)
+            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftYMin, leftYMax)
             if (lock1Pending)
             {
-                spawnEnemies(0, 800, 1600, 2400);
+                spawnEnemies('SG', 0, 800, 1600, 2400, 400, 600);
                 lock1Pending = false;
             }
 
