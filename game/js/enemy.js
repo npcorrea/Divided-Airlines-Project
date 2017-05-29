@@ -14,6 +14,19 @@
     // add properties
     this.anchor.set(.5);
     game.physics.enable(this);
+
+    if (key == 'SG')
+    {
+        this.body.setSize(156, 256, 35, 0);
+        this.animations.add('eRight', null, 8, true);
+        //this.animations.add('eAttack', null, 13, false);
+    }
+    else if (key == 'FA')
+    {
+        this.body.setSize(102, 256, 91, 0);
+        this.animations.add('eRight', null, 8, true);
+        //this.animations.add('eAttack', null, 13, false);
+    }
  }
 
 Enemy.prototype.update = function()
@@ -31,9 +44,12 @@ Enemy.prototype.update = function()
    // basic AI for enemy movement
    if(eIsLeft)
    {
-      // left walking animation goes here
       if(this.x - player.x > enemyAtkRange) // if outside attack range
       {
+         // left walking animation
+         this.animations.play('eRight');
+         this.scale.x = -1;
+
          // move towards the player
          game.physics.arcade.moveToObject(this, player, speed);
       }
@@ -43,14 +59,18 @@ Enemy.prototype.update = function()
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
          game.physics.arcade.overlap(this, player, attack, null, this);
-         game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
+         //game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
       }
    }
    else if (!eIsLeft)// if eIsRight (ie eIsLeft = false)
    {
-      // right walking animation goes here
+
       if(player.x - this.x > enemyAtkRange) // if outside attack range
       {
+         // right walking animation
+         this.animations.play('eRight');
+         this.scale.x = 1;
+
          // move towards the player
          game.physics.arcade.moveToObject(this, player, speed);
       }
@@ -60,7 +80,7 @@ Enemy.prototype.update = function()
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
          game.physics.arcade.overlap(this, player, attack, null, this);
-         game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
+         //game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
       }
    }
 };
