@@ -1,29 +1,25 @@
 //Game: Core game loop
-var Level1Part1 = function(game) {};
-Level1Part1.prototype =
+var Level1Part3 = function(game) {};
+Level1Part3.prototype =
 {
     create: function()
     {
-        //Make it rock in here
-        game.music = game.add.audio('music');
-        //game.music.play('', 1, 1, true);
-        game.music.volume = 0.2;
-
         //Set some boundries
-        game.world.setBounds(0,0,1600,600);
+        game.world.setBounds(0,0,800,600);
 
         //Create Objects and their Physics
-        game.background = game.add.image(0,0,'background1');
+        game.background = game.add.image(0,0,'background3');
 
         //Create door that triggers level transition
-        door = game.add.sprite(game.world.width - 165, game.world.height - 280, 'door');
+        door = game.add.sprite(200, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
         //Make Player
-        player = game.add.sprite(128, game.world.height - 128, 'doctor');
+        player = game.add.sprite(600, game.world.height - 228, 'doctor');
         player.anchor.x = 0.5;
         player.anchor.y = 0.5;
+        player.scale.x = -1;
         game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT, 0.75, 0.75);
 
         //Player Animation
@@ -41,11 +37,13 @@ Level1Part1.prototype =
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
         healing = game.input.keyboard.addKey(Phaser.Keyboard.C);
+
+        scalpels = 5;
     },
     update: function()
     {
         //Collision and overlap detection
-        game.physics.arcade.overlap(player, door, transport1, null, this);
+        game.physics.arcade.overlap(player, door, transport3, null, this);
 
         //Movement Controls
         //Defaults
@@ -117,6 +115,12 @@ Level1Part1.prototype =
             player.body.y = 185;
         }
 
+        //Door Constraints
+        if (player.body.x > 500)
+        {
+            player.body.x = 500;
+        }
+
         //Activate close-range attack
         if (sAttack.isDown)
         {
@@ -146,45 +150,6 @@ Level1Part1.prototype =
                 playerHealth += 3000;
                 pills -= 1;
             }
-        }
-
-        //Screen Lock 1 trigger
-        if ((player.body.x < 1200 && player.body.x > 1136) && lock1Pending)
-        {
-            lock1 = true;
-        }
-
-        //Screen Lock 1
-        if (lock1)
-        {
-            //Camera lock
-            game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
-
-            //Lock bounds
-            if (player.body.x < 800)
-            {
-                player.body.x = 800;
-            }
-
-            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpawn)
-            if (lock1Pending)
-            {
-                spawnEnemies('SG', 0, 800, 1600, 2400, true);
-                lock1Pending = false;
-            }
-
-            game.physics.arcade.collide(spawnGroup, spawnGroup);
-
-            //Release lock
-            if (aliveEnemies == 0 && !lock1Spawn)
-            {
-                lock1 = false;
-            }
-        }
-        else if (!lock1)
-        {
-            //Release camera
-            game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
     }
 };
