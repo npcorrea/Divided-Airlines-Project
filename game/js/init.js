@@ -40,6 +40,7 @@ var lockBossSpawn = true;
 //Load game states
 game.state.add('Load', Load);
 game.state.add('MainMenu', MainMenu);
+game.state.add('Instructions', Instructions);
 game.state.add('Level1Part1', Level1Part1);
 game.state.add('Level1Part2', Level1Part2);
 game.state.add('Win', Win);
