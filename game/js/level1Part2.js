@@ -10,6 +10,16 @@ Level1Part2.prototype =
         //Create Objects and their Physics
         game.background = game.add.image(0,0,'background2');
 
+        //Create a custom timer
+        levelTimer = game.time.create();
+
+        //Create a delayed event 30s from now
+        //Change later. 30s for testing
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
+
+        //Start the timer
+        levelTimer.start();
+
         //Create door that triggers level transition
         door = game.add.sprite(200, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
@@ -26,7 +36,7 @@ Level1Part2.prototype =
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
-        player.body.setSize(125, 230, 63, 10);
+        player.body.setSize(120, 230, 70, 15);
         player.body.collideWorldBounds = true;
 
         //Input manager
@@ -35,11 +45,15 @@ Level1Part2.prototype =
         //Attack Keys
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
+        healing = game.input.keyboard.addKey(Phaser.Keyboard.C);
+
+        scalpels = 5;
     },
     update: function()
     {
         //Collision and overlap detection
         game.physics.arcade.overlap(player, door, transport2, null, this);
+        game.physics.arcade.collide(player, emitter, scorpipain);
 
         //Movement Controls
         //Defaults
@@ -132,7 +146,20 @@ Level1Part2.prototype =
         //Activate long-range attack
         if (lAttack.justPressed(lAttack))
         {
-            //Summon Weapon
+            if (scalpels > 0)
+            {
+                scalpelThrow();
+            }
+        }
+
+        //Activate healing
+        if (healing.justPressed(healing))
+        {
+            if (pills > 0)
+            {
+                playerHealth += 3000;
+                pills -= 1;
+            }
         }
 
         //Screen Lock 2 trigger
@@ -153,10 +180,10 @@ Level1Part2.prototype =
                 player.body.x = 675;
             }
 
-            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftYMin, leftYMax)
+            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax,, leftSpawn)
             if (lock2Pending)
             {
-                spawnEnemies('FA', 200, 400, 800, 1600, 600, 1200);
+                spawnEnemies('FA', 200, 400, 800, 1600, false);
                 lock2Pending = false;
             }
 
@@ -192,10 +219,10 @@ Level1Part2.prototype =
                 player.body.x = 1475;
             }
 
-            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftYMin, leftYMax)
+            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax,, leftSpawn)
             if (lock3Pending)
             {
-                spawnEnemies('FA', 0, 800, 1600, 2400, 400, 600);
+                spawnEnemies('FA', 0, 800, 1600, 2400, true);
                 lock3Pending = false;
             }
 
@@ -231,10 +258,10 @@ Level1Part2.prototype =
                 player.body.x = 2275;
             }
 
-            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftYMin, leftYMax)
+            //Create enemies (sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpawn)
             if (lock4Pending)
             {
-                spawnEnemies('FA', 800, 1600, 2400, 3200, 400, 600);
+                spawnEnemies('FA', 800, 1600, 2400, 3200, true);
                 lock4Pending = false;
             }
 
@@ -245,6 +272,7 @@ Level1Part2.prototype =
             {
                 lock4 = false;
                 key = true;
+                scorprain();
             }
         }
 
@@ -285,5 +313,31 @@ Level1Part2.prototype =
             //Release camera
             game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
-    }
+    },
+      //This is for printing out time
+      render: function() {
+
+      //Prints out the timer
+      if (levelTimer.running) {
+              game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#ffffff");
+          }
+      //If the timer reaches 0, print this out
+          else {
+              //goToLoseState();
+              //game.state.start('Lose');
+              //game.debug.text("Time's up!", 32,32, '#ff0000');
+          }
+      },
+      endLevelTimer: function() {
+          //This stops the timer when the delayed event triggers
+          levelTimer.stop();
+          //game.debug.text("Time's up!", 32,32, '#ff0000');
+          goToLoseState();
+      },
+      formatLevelTime: function(s) {
+          //This converts the seconds (s) to a nicely formatted and padded time string
+          var minutes = "0" + Math.floor(s / 60);
+          var seconds = "0" + (s - minutes * 60);
+          return minutes.substr(-2) + ":" + seconds.substr(-2);
+      }
 };

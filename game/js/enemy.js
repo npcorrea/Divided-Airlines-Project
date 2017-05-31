@@ -3,8 +3,9 @@
  Enemy.prototype.constructor = Enemy;
 
  var eIsLeft;
- var enemyAtkRange = 45;
+ var enemyAtkRange = 140;
  var speed = 100;
+ var defBound;
 
  function Enemy(game, key, x, y, frame)
  {
@@ -14,23 +15,27 @@
     // add properties
     this.anchor.set(.5);
     game.physics.enable(this);
+    this.enemyHealth = 500;
 
     if (key == 'SG')
     {
-        this.body.setSize(156, 256, 35, 0);
-        this.animations.add('eRight', null, 8, true);
-        //this.animations.add('eAttack', null, 13, false);
+        defBound = this.body.setSize(140, 256, 51, 0);
+        this.animations.add('eRight', [0, 1, 2, 3, 4, 5], 8, true);
+        this.animations.add('eAttack', [6, 7, 8, 9], 13, true);
     }
     else if (key == 'FA')
     {
-        this.body.setSize(102, 256, 91, 0);
-        this.animations.add('eRight', null, 8, true);
-        //this.animations.add('eAttack', null, 13, false);
+        defBound = this.body.setSize(90, 256, 103, 0);
+        this.animations.add('eRight', [0, 1, 2, 3, 4, 5, 6, 7], 8, true);
+        this.animations.add('eAttack', [8, 9, 10], 8, true);
     }
  }
 
 Enemy.prototype.update = function()
 {
+
+    game.physics.arcade.overlap(this, scalpel, stab, null, this);
+
     // check for left or right
     if (this.x - player.x < 0)
     {
@@ -47,6 +52,7 @@ Enemy.prototype.update = function()
       if(this.x - player.x > enemyAtkRange) // if outside attack range
       {
          // left walking animation
+         defBound;
          this.animations.play('eRight');
          this.scale.x = -1;
 
@@ -55,11 +61,11 @@ Enemy.prototype.update = function()
       }
       else if (this.x - player.x > 0 && (player.x - player.x < enemyAtkRange)) // if within attack range
       {
-         // left attacking animation
+         this.body.setSize(256, 256, 0, 0);
+         this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
          game.physics.arcade.overlap(this, player, attack, null, this);
-         //game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
       }
    }
    else if (!eIsLeft)// if eIsRight (ie eIsLeft = false)
@@ -68,6 +74,7 @@ Enemy.prototype.update = function()
       if(player.x - this.x > enemyAtkRange) // if outside attack range
       {
          // right walking animation
+         defBound;
          this.animations.play('eRight');
          this.scale.x = 1;
 
@@ -76,11 +83,11 @@ Enemy.prototype.update = function()
       }
       else if (player.x - this.x > 0 && (player.x - this.x < enemyAtkRange))// if within attack range
       {
-         // right attacking animation
+         this.body.setSize(256, 256, 0, 0);
+         this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
          game.physics.arcade.overlap(this, player, attack, null, this);
-         //game.time.events.add(Phaser.Timer.SECOND * 4, wait, this);
       }
    }
 };
@@ -90,15 +97,37 @@ function attack ()
 {
     if (isAttacking)
     {
-        this.kill();
-        aliveEnemies -= 1;
-        console.log(aliveEnemies);
+        if ((isRight && (player.x < this.x)) || (isLeft && (this.x < player.x)))
+        {
+            this.enemyHealth -= 10;
+        }
+
+        if(this.enemyHealth == 0)
+        {
+            this.kill();
+            aliveEnemies -= 1;
+        }
     }
     else
+    {
+        playerHealth -= 10;
+    }
+
+    if (playerHealth == 0)
     {
         game.state.start('Lose');
     }
 };
 
-function wait ()
-{};
+function stab()
+{
+    console.log(this.enemyHealth);
+    this.enemyHealth -= 100;
+    scalpel.kill();
+
+    if (this.enemyHealth == 0)
+    {
+        this.kill();
+        aliveEnemies -= 1;
+    }
+};
