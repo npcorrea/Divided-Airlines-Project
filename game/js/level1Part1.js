@@ -20,7 +20,7 @@ Level1Part1.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *20, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -223,6 +223,5 @@ Level1Part1.prototype =
           var minutes = "0" + Math.floor(s / 60);
           var seconds = "0" + (s - minutes * 60);
           return minutes.substr(-2) + ":" + seconds.substr(-2);
-      },
-    }
+      }
 };
