@@ -2,8 +2,8 @@ var Cutscene = function(game) {};
 Cutscene.prototype =
 {
 	create: function(){
-		text = game.add.text(32, 32, '', { font: "15px Arial", fill: "#bababa" });
-		skip = game.add.text(32, 500, 'Press SPACE to skip cutscene.', {font: "15px Arial", fill: "#bababa"});
+		text = game.add.text(32, 32, '', { font: "15px Cuprum", fill: "#bababa" });
+		skip = game.add.text(32, 500, 'Press SPACE to skip cutscene.', {font: "15px Cuprum", fill: "#bababa"});
 
 		// content hold first block of text
 		content = textBlock[0];
