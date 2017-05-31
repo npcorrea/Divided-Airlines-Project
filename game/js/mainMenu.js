@@ -4,21 +4,21 @@ MainMenu.prototype =
 {
     create: function()
     {
+        //Background
+        game.background = game.add.image(0,0,'MenuBG');
+
         //Instructions
-        game.add.text(230, 200, "Press/Hold SPACE to attack",
+        game.add.text(225, 450, "Press/Hold SPACE to attack",
             {font: '30px Arial', fill: '#ffffff'});
 
         //Centered Play Button
-        playButton = game.add.button(400, 300, 'play', this.playTime, this);
+        playButton = game.add.button(400, 350, 'play', this.playTime, this);
         playButton.anchor.x = 0.5;
         playButton.anchor.y = 0.5;
-
-        //Background color, because color is good
-        game.stage.backgroundColor = "#000077";
     },
     playTime: function()
     {
         //Starts game on button press
-        game.state.start('Level1');
+        game.state.start('Level1Part1');
     }
 };
