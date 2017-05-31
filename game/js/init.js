@@ -64,7 +64,6 @@ var lineDelay = 400;
 var spaceKey;
 var n = 0;
 
-
 //Load game states
 game.state.add('Load', Load);
 game.state.add('Cutscene', Cutscene);
