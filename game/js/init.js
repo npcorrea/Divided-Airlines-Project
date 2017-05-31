@@ -42,9 +42,34 @@ var lockBoss = false;
 var lockBossPending = true;
 var lockBossSpawn = true;
 
+var text1 = [
+    "The dumb sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
+    "through the crowd around the door of the Chat. `It's like my body's developed",
+    "",
+	];
+var text2 = [
+	"The sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
+    "through the crowd around the door of the Chat. `It's like my body's developed",
+    "",
+];
+var textBlock = [text1, text2];
+var line = [];
+var content = [];
+
+var wordIndex = 0;
+var lineIndex = 0;
+
+var wordDelay = 120;
+var lineDelay = 400;
+var spaceKey;
+var n = 0;
+
+
 //Load game states
 game.state.add('Load', Load);
+game.state.add('Cutscene', Cutscene);
 game.state.add('MainMenu', MainMenu);
+game.state.add('Instructions', Instructions);
 game.state.add('Level1Part1', Level1Part1);
 game.state.add('Level1Part2', Level1Part2);
 game.state.add('Level1Part3', Level1Part3);
