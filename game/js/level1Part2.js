@@ -340,4 +340,5 @@ Level1Part2.prototype =
           var seconds = "0" + (s - minutes * 60);
           return minutes.substr(-2) + ":" + seconds.substr(-2);
       },
+    }
 };
