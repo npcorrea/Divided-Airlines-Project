@@ -15,7 +15,7 @@ Level1Part2.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 2 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -32,7 +32,10 @@ Level1Part2.prototype =
         game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT, 0.75, 0.75);
 
         //Player Animation
-        player.animations.add('right', null, 13, true);
+        player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 13, true);
+        player.animations.add('hammer', [10, 11, 12], 8, true);
+        let tossing = player.animations.add('toss', [13, 14, 15], 13, false);
+        tossing.onComplete.add(done, this);
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
@@ -62,11 +65,14 @@ Level1Part2.prototype =
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
         {
-            player.animations.stop();
+            if (!isAttacking && !isThrowing)
+            {
+                player.frame = 16;
+            }
         }
 
         //Left
-        if (cursors.left.isDown)
+        if (cursors.left.isDown && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = -150;
             player.animations.play('right');
@@ -76,7 +82,7 @@ Level1Part2.prototype =
         }
 
         //Right
-        if (cursors.right.isDown)
+        if (cursors.right.isDown && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
@@ -86,7 +92,7 @@ Level1Part2.prototype =
         }
 
         //Up
-        if (cursors.up.isDown)
+        if (cursors.up.isDown && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = -150;
 
@@ -103,7 +109,7 @@ Level1Part2.prototype =
         }
 
         //Down
-        if (cursors.down.isDown)
+        if (cursors.down.isDown && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = 150;
 
@@ -134,18 +140,19 @@ Level1Part2.prototype =
         //Activate close-range attack
         if (sAttack.isDown)
         {
-            player.tint = 0x770000;
+            player.animations.play('hammer');
             isAttacking = true;
         }
         else
         {
-            player.tint = 0xFFFFFF;
             isAttacking = false;
         }
 
         //Activate long-range attack
         if (lAttack.justPressed(lAttack))
         {
+            isThrowing = true;
+            player.animations.play('toss');
             if (scalpels > 0)
             {
                 scalpelThrow();
@@ -277,7 +284,7 @@ Level1Part2.prototype =
         }
 
         //Screen Lock Boss trigger
-        if ((player.body.x < 275) && lockBossPending && key)
+        if ((player.body.x < 525) && lockBossPending && key)
         {
             lockBoss = true;
         }
@@ -289,9 +296,9 @@ Level1Part2.prototype =
             game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
 
             //Lock bounds
-            if (player.body.x > 675)
+            if (player.body.x > 800)
             {
-                player.body.x = 675;
+                player.body.x = 800;
             }
 
             //Create Boss

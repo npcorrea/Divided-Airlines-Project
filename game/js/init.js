@@ -11,6 +11,7 @@ var sAttack;
 var emitter;
 var scalpel;
 var isAttacking = false;
+var isThrowing = false;
 var isLeft = false;
 var isRight = false;
 var spawnGroup;
@@ -19,7 +20,7 @@ var playerHealth = 10000;
 var pills = 3;
 var scalpels = 5;
 
-var waveSize = 1;
+var waveSize = 5;
 var aliveEnemies = 0;
 
 var lock1 = false;
