@@ -1,6 +1,6 @@
 // object to add selectable menu options
 function AddOption(game, x, y, text, callback){
-	Phaser.Text.call(this, game, x, y, text, {font: 'Anton', fontSize: '40px', fill: '#bababa'});
+	Phaser.Text.call(this, game, x, y, text, {font: 'Cuprum', fontSize: '40px', fill: '#bababa'});
 	// change text color when hovering over
 	var onOver = function(target){
 			target.fill = "white";
