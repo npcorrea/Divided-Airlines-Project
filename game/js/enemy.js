@@ -4,7 +4,7 @@
 
  var eIsLeft;
  var enemyAtkRange = 140;
- var speed = 100;
+ var eSpeed = 100;
  var defBound;
 
  function Enemy(game, key, x, y, frame)
@@ -34,7 +34,7 @@
 Enemy.prototype.update = function()
 {
 
-    game.physics.arcade.overlap(this, scalpel, stab, null, this);
+    game.physics.arcade.overlap(this, scalpel, eStab, null, this);
 
     // check for left or right
     if (this.x - player.x < 0)
@@ -57,7 +57,7 @@ Enemy.prototype.update = function()
          this.scale.x = -1;
 
          // move towards the player
-         game.physics.arcade.moveToObject(this, player, speed);
+         game.physics.arcade.moveToObject(this, player, eSpeed);
       }
       else if (this.x - player.x > 0 && (player.x - player.x < enemyAtkRange)) // if within attack range
       {
@@ -65,7 +65,7 @@ Enemy.prototype.update = function()
          this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
-         game.physics.arcade.overlap(this, player, attack, null, this);
+         game.physics.arcade.overlap(this, player, eAttack, null, this);
       }
    }
    else if (!eIsLeft)// if eIsRight (ie eIsLeft = false)
@@ -79,7 +79,7 @@ Enemy.prototype.update = function()
          this.scale.x = 1;
 
          // move towards the player
-         game.physics.arcade.moveToObject(this, player, speed);
+         game.physics.arcade.moveToObject(this, player, eSpeed);
       }
       else if (player.x - this.x > 0 && (player.x - this.x < enemyAtkRange))// if within attack range
       {
@@ -87,19 +87,22 @@ Enemy.prototype.update = function()
          this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
-         game.physics.arcade.overlap(this, player, attack, null, this);
+         game.physics.arcade.overlap(this, player, eAttack, null, this);
       }
    }
 };
 
 // Combat resolution
-function attack ()
+function eAttack ()
 {
+    this.tint = 0xFFFFFF;
+
     if (isAttacking)
     {
         if ((isRight && (player.x < this.x)) || (isLeft && (this.x < player.x)))
         {
             this.enemyHealth -= 10;
+            this.tint = 0x770000;
         }
 
         if(this.enemyHealth == 0)
@@ -119,9 +122,8 @@ function attack ()
     }
 };
 
-function stab()
+function eStab()
 {
-    console.log(this.enemyHealth);
     this.enemyHealth -= 100;
     scalpel.kill();
 

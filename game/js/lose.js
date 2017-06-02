@@ -22,9 +22,9 @@ Lose.prototype =
     {
         //Reset Variables
         isAttacking = false;
+        isThrowing = false;
         isLeft = false;
         isRight = false;
-        spawnGroup;
         key = false;
         playerHealth = 10000;
         pills = 3;
@@ -54,6 +54,6 @@ Lose.prototype =
         lockBossSpawn = true;
 
         //Move to MainMenu
-        game.state.start('MainMenu');
+        game.state.start('Level1Part1');
     }
 };
