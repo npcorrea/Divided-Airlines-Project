@@ -1,3 +1,4 @@
+// adapted from Phaser example 'display text word by word'
 var Cutscene = function(game) {};
 Cutscene.prototype =
 {
@@ -5,12 +6,13 @@ Cutscene.prototype =
 		text = game.add.text(32, 32, '', { font: "15px Cuprum", fill: "#bababa" });
 		skip = game.add.text(32, 500, 'Press SPACE to skip cutscene.', {font: "15px Cuprum", fill: "#bababa"});
 
-		// content hold first block of text
+		// content holds first block of text
 		content = textBlock[0];
 		spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		this.nextLine();
 	},
 	update: function(){
+		// press space bar to skip intro
 		if(spaceKey.isDown){
 			 game.state.start('Level1Part1');
 		}
@@ -21,12 +23,12 @@ Cutscene.prototype =
 	        if(n >= 1){
 	        	// if at end of text blocks, clear text and go to menu after timer or press space to go to menu
 	        	lineIndex = 0;
-	        	//text.setText("");
 
 	        	this.goToLevel();
 	        	return;
 	        }
 	        else {
+	        	// increment n to retrieve next array of text from textBlock array
 	        	n++;
 	        	console.log('n = ' + n);
 	        	content = textBlock[n];
@@ -58,18 +60,13 @@ Cutscene.prototype =
 	        //  Add a carriage return
 	        text.text = text.text.concat("\n");
 
-			game.time.events.add(lineDelay, this.nextLine, this);
 	        //  Get the next line after the lineDelay amount of ms has elapsed
-	        //spaceKey.onDown.add(this.nextLine, this);
+			game.time.events.add(lineDelay, this.nextLine, this);
 	    }
 
 	},
 	goToLevel: function() {
-		if(spaceKey.isDown){
-	    	console.log('Go to level1');
-	        game.state.start('Level1Part1');
-	    }
-	        	
+		// start game after timer
 		setTimeout(function () {
 			game.state.start('Level1Part1');
     	}, 2200);

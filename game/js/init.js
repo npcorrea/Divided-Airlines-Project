@@ -38,12 +38,12 @@ var lockBossPending = true;
 var lockBossSpawn = true;
 
 var text1 = [
-    "The dumb sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
+    "The bleh sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
     "through the crowd around the door of the Chat. `It's like my body's developed",
     "",
 	];
 var text2 = [
-	"The sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
+	"Blah blah sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
     "through the crowd around the door of the Chat. `It's like my body's developed",
     "",
 ];
