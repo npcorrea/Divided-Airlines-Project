@@ -6,6 +6,7 @@ Load.prototype =
     {
         //Load Backgrounds
         game.load.image('MenuBG', 'assets/img/TitleArt.png');
+        game.load.image('Face', 'assets/img/DoctorFace.png');
     	game.load.image('background1', 'assets/img/Jet_Bridge.png');
         game.load.image('background2', 'assets/img/Plane.png');
 

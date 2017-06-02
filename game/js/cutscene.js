@@ -3,8 +3,9 @@ var Cutscene = function(game) {};
 Cutscene.prototype =
 {
 	create: function(){
-		text = game.add.text(32, 32, '', { font: "15px Cuprum", fill: "#bababa" });
-		skip = game.add.text(32, 500, 'Press SPACE to skip cutscene.', {font: "15px Cuprum", fill: "#bababa"});
+		game.background = game.add.image(0,0,'Face');
+		text = game.add.text(400, 200, '', { font: "17px Cuprum", fill: "#bababa" });
+		skip = game.add.text(500, 550, 'Press SPACE to skip cutscene.', {font: "15px Cuprum", fill: "#bababa"});
 
 		// content holds first block of text
 		content = textBlock[0];
@@ -20,7 +21,7 @@ Cutscene.prototype =
 	nextLine: function() {
 	    if (lineIndex == content.length){
 	        // go to next block of text when finished, clearing previous text
-	        if(n >= 1){
+	        if(n >= 2){
 	        	// if at end of text blocks, clear text and go to menu after timer or press space to go to menu
 	        	lineIndex = 0;
 

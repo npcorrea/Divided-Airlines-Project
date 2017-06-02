@@ -38,16 +38,23 @@ var lockBossPending = true;
 var lockBossSpawn = true;
 
 var text1 = [
-    "The bleh sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
-    "through the crowd around the door of the Chat. `It's like my body's developed",
+    "They beat me up... humiliated me... denied me a seat.",
+    "But now now I'm back and I'm taking matters into ",
+    "my own hands. If they won't fly me home then I'm ",
+    "going to have to do it myself.",
     "",
 	];
 var text2 = [
-	"Blah blah sky above the port was the color of television, tuned to a dead channel.\n`It's not like I'm using,' Case heard someone say, as he shouldered his way ",
-    "through the crowd around the door of the Chat. `It's like my body's developed",
-    "",
+	"Time to get my revenge.",
+    "I'm going to presribe them some medication.",
+    "Prescription?",
+    "DEATH.",
 ];
-var textBlock = [text1, text2];
+var text3 = [
+	"MISSION: Fight your way onto the plane.",
+	"Go to the cockpit and fly your damn self home."
+];
+var textBlock = [text1, text2, text3];
 var line = [];
 var content = [];
 
