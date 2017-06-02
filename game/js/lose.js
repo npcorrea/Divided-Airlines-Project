@@ -26,6 +26,9 @@ Lose.prototype =
         isRight = false;
         spawnGroup;
         key = false;
+        playerHealth = 10000;
+        pills = 3;
+        scalpels = 5;
 
         waveSize = 5;
         aliveEnemies = 0;

@@ -8,13 +8,18 @@ var restartButton;
 var door;
 var enemy;
 var sAttack;
+var emitter;
+var scalpel;
 var isAttacking = false;
 var isLeft = false;
 var isRight = false;
 var spawnGroup;
 var key = false;
+var playerHealth = 10000;
+var pills = 3;
+var scalpels = 5;
 
-var waveSize = 5;
+var waveSize = 1;
 var aliveEnemies = 0;
 
 var lock1 = false;
@@ -59,7 +64,6 @@ var lineDelay = 400;
 var spaceKey;
 var n = 0;
 
-
 //Load game states
 game.state.add('Load', Load);
 game.state.add('Cutscene', Cutscene);
@@ -67,27 +71,14 @@ game.state.add('MainMenu', MainMenu);
 game.state.add('Instructions', Instructions);
 game.state.add('Level1Part1', Level1Part1);
 game.state.add('Level1Part2', Level1Part2);
+game.state.add('Level1Part3', Level1Part3);
 game.state.add('Win', Win);
 game.state.add('Lose', Lose);
 
 //Start Preloader
 game.state.start('Load');
 
-//Level transition
-function transport ()
-{
-    game.state.start('Win');
-};
-
-//Combat resolution
-function attack ()
-{
-    if (isAttacking)
-    {
-        enemy.kill();
-    }
-    else
-    {
-        game.state.start('Lose');
-    }
+//Call this to go to the losing state
+function goToLoseState(){
+  game.state.start('Lose');
 }
