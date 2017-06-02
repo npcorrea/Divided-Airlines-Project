@@ -46,14 +46,15 @@ var text1 = [
     "They beat me up... humiliated me... denied me a seat.",
     "But now now I'm back and I'm taking matters into ",
     "my own hands. If they won't fly me home then I'm ",
-    "going to have to do it myself.",
+    "going to have to do it myself.	",
     "",
 	];
 var text2 = [
 	"Time to get my revenge.",
     "I'm going to presribe them some medication.",
     "Prescription?",
-    "DEATH.",
+    "DEATH.		",
+    "",
 ];
 var text3 = [
 	"MISSION: Fight your way onto the plane.",
