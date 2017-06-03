@@ -18,7 +18,7 @@ var spawnGroup;
 var key = false;
 var playerHealth = 10000;
 var pills = 3;
-var scalpels = 3;
+var scalpels = 5;
 
 var waveSize = 5;
 var aliveEnemies = 0;
@@ -90,4 +90,44 @@ game.state.start('Load');
 //Call this to go to the losing state
 function goToLoseState(){
   game.state.start('Lose');
+}
+
+// Replay the game
+function again()
+{
+    //Reset Variables
+    isAttacking = false;
+    isThrowing = false;
+    isLeft = false;
+    isRight = false;
+    key = false;
+    playerHealth = 10000;
+    pills = 3;
+    scalpels = 5;
+
+    waveSize = 5;
+    aliveEnemies = 0;
+
+    lock1 = false;
+    lock1Pending = true;
+    lock1Spawn = true;
+
+    lock2 = false;
+    lock2Pending = true;
+    lock2Spawn = true;
+
+    lock3 = false;
+    lock3Pending = true;
+    lock3Spawn = true;
+
+    lock4 = false;
+    lock4Pending = true;
+    lock4Spawn = true;
+
+    lockBoss = false;
+    lockBossPending = true;
+    lockBossSpawn = true;
+
+    //Move to MainMenu
+    game.state.start('Level1Part1');
 }
