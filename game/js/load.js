@@ -123,7 +123,7 @@ function spawnBoss()
 
 function scorprain()
 {
-    emitter = game.add.emitter(1485, -200, 200);
+    emitter = game.add.emitter(1485, -200, 100);
     emitter.makeParticles('star', 0, 7000, true);
     emitter.start(false, 7000, 20);
 };
@@ -169,4 +169,9 @@ function scalpelThrow()
 function done()
 {
     isThrowing = false;
+};
+
+function done2()
+{
+    isAttacking = false;
 }

@@ -34,7 +34,8 @@ Level1Part3.prototype =
 
         //Player Animation
         player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 13, true);
-        player.animations.add('hammer', [10, 11, 12], 8, true);
+        let hammer = player.animations.add('hammer', [10, 11, 12], 8, false);
+        hammer.onComplete.add(done2, this);
         let tossing = player.animations.add('toss', [13, 14, 15], 13, false);
         tossing.onComplete.add(done, this);
 
@@ -51,7 +52,7 @@ Level1Part3.prototype =
         lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
         healing = game.input.keyboard.addKey(Phaser.Keyboard.C);
 
-        scalpels = 5;
+        scalpels = 3;
     },
     update: function()
     {
@@ -138,14 +139,10 @@ Level1Part3.prototype =
         }
 
         //Activate close-range attack
-        if (sAttack.isDown)
+        if (sAttack.justPressed(sAttack))
         {
-            player.animations.play('hammer');
             isAttacking = true;
-        }
-        else
-        {
-            isAttacking = false;
+            player.animations.play('hammer');
         }
 
         //Activate long-range attack

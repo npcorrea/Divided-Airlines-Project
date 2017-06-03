@@ -125,7 +125,7 @@ function eAttack ()
 function eStab()
 {
     this.enemyHealth -= 100;
-    scalpel.kill();
+    //scalpel.kill();
 
     if (this.enemyHealth == 0)
     {
