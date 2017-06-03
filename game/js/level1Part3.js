@@ -15,7 +15,7 @@ Level1Part3.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *30, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -49,8 +49,13 @@ Level1Part3.prototype =
 
         //Attack Keys
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
-        healing = game.input.keyboard.addKey(Phaser.Keyboard.C);
+        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        healing = game.input.keyboard.addKey(Phaser.Keyboard.R);
+
+        w = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        a = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        d = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
         scalpels = 3;
     },
@@ -64,7 +69,8 @@ Level1Part3.prototype =
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
-        if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
+        if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
+             && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
         {
             if (!isAttacking && !isThrowing)
             {
@@ -73,7 +79,7 @@ Level1Part3.prototype =
         }
 
         //Left
-        if (cursors.left.isDown && !isAttacking && !isThrowing)
+        if ((cursors.left.isDown || aKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = -150;
             player.animations.play('right');
@@ -83,7 +89,7 @@ Level1Part3.prototype =
         }
 
         //Right
-        if (cursors.right.isDown && !isAttacking && !isThrowing)
+        if ((cursors.right.isDown || dKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
@@ -93,7 +99,7 @@ Level1Part3.prototype =
         }
 
         //Up
-        if (cursors.up.isDown && !isAttacking && !isThrowing)
+        if ((cursors.up.isDown || wKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = -150;
 
@@ -110,7 +116,7 @@ Level1Part3.prototype =
         }
 
         //Down
-        if (cursors.down.isDown && !isAttacking && !isThrowing)
+        if ((cursors.down.isDown || sKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = 150;
 
