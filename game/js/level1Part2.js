@@ -330,7 +330,7 @@ Level1Part2.prototype =
       render: function() {
       //Prints out the timer
       if (levelTimer.running) {
-              game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#ffffff");
+              game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");
           }
       //If the timer reaches 0, print this out
           else {
