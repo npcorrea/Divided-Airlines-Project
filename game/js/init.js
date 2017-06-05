@@ -19,7 +19,7 @@ var spawnGroup;
 var key = false;
 var playerHealth = 10000;
 var pills = 3;
-var scalpels = 15;
+var scalpels = 5;
 
 var waveSize = 5;
 var aliveEnemies = 0;

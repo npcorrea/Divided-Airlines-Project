@@ -40,10 +40,10 @@ function HUD()
 function updateHUD()
 {
    // when the player uses a scalpel
-   scalpelText = 'Scalpels: ' + scalpels;
+   scalpelText.text = 'Scalpels: ' + scalpels;
 
    // when the player uses a pill
-   pillText = 'Pills: ' + pills;
+   pillText.text = 'Pills: ' + pills;
 
    // healthBar
    healthBar.crop.width = (playerHealth/playerMaxHealth) * healthBar.width;
