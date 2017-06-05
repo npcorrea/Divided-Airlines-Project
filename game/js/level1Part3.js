@@ -56,9 +56,13 @@ Level1Part3.prototype =
         a = game.input.keyboard.addKey(Phaser.Keyboard.A);
         s = game.input.keyboard.addKey(Phaser.Keyboard.S);
         d = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+        HUD();
     },
     update: function()
     {
+        updateHUD();
+        
         //Collision and overlap detection
         game.physics.arcade.overlap(player, door, transport3, null, this);
 

@@ -17,6 +17,13 @@ Load.prototype =
         game.load.image('door', 'assets/img/TheBESTdoor.png');
         game.load.image('star', 'assets/img/star.png');
 
+        game.load.image('healthBar', 'assets/img/healthBarSmall.png', 256, 40);
+        game.load.image('scalpelIcon', 'assets/img/scalpelHUD.png', 32, 32);
+        game.load.image('pillIcon', 'assets/img/pillHUD.png', 32, 32);
+        game.load.image('pillButton', 'assets/img/rButtonHUD.png', 32, 32);
+        game.load.image('meleeAtkButton', 'assets/img/spaceBarHUD.png', 185, 43);
+        game.load.image('rangedAtkButton', 'assets/img/eButtonHUD.png', 32, 32);
+
         //Load Spritesheets
         game.load.spritesheet('doctor', 'assets/img/DoctorWalkSpriteSheet.png', 256, 256);
         game.load.spritesheet('FA', 'assets/img/FAWalkAnimRight.png', 256, 256);

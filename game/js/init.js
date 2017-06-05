@@ -44,6 +44,19 @@ var lockBoss = false;
 var lockBossPending = true;
 var lockBossSpawn = true;
 
+var healthBar;
+var scalpeIcon;
+var scalpelText;
+var pillIcon;
+var pillText;
+var pillButton;
+var pillButtonText;
+var meleeAtkIcon;
+var meleeAtkText;
+var rangedAtkIcon;
+var rangedAtkText;
+var playerMaxHealth = 10000;
+
 var text1 = [
     "They beat me up... humiliated me... denied me a seat.",
     "But now now I'm back and I'm taking matters into ",
