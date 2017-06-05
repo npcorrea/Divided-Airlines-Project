@@ -20,6 +20,7 @@ var key = false;
 var playerHealth = 10000;
 var pills = 3;
 var scalpels = 5;
+var HUDFont = {font: 'Cuprum', fontSize: '24px', fill: '#000000'};
 
 var waveSize = 5;
 var aliveEnemies = 0;

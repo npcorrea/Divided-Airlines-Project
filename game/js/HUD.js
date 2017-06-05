@@ -9,31 +9,31 @@ function HUD()
    // scalpels
    scalpelIcon = this.game.add.sprite(325, 25, 'scalpelIcon');
    scalpelIcon.fixedToCamera = true;
-   scalpelText = game.add.text(360, 25, 'Scalpels:', {fontSize: '32px', fill: '#000'});
+   scalpelText = game.add.text(360, 25, 'Scalpels: 0', HUDFont);
    scalpelText.fixedToCamera = true;
 
    // pills
    pillIcon = this.game.add.sprite(575, 25, 'pillIcon');
    pillIcon.fixedToCamera = true;
-   pillText = game.add.text(610, 25, 'Pills:', {fontSize: '32px', fill: '#000'});
+   pillText = game.add.text(610, 25, 'Pills: 0', HUDFont);
    pillText.fixedToCamera = true;
 
    pillButton = this.game.add.sprite(650, 540, 'pillButton');
    pillButton.fixedToCamera = true;
-   pillButtonText = game.add.text(700, 550, 'to heal', {fontSize: '24px', fill: '#000'});
+   pillButtonText = game.add.text(700, 550, 'to heal', HUDFont);
    pillButtonText.fixedToCamera = true;
 
    // attack button displays
    // melee
    meleeAtkIcon = this.game.add.sprite(25, 545, 'meleeAtkButton');
    meleeAtkIcon.fixedToCamera = true;
-   meleeAtkText = game.add.text(215, 550, 'to melee attack', {fontSize: '24px', fill: '#000'});
+   meleeAtkText = game.add.text(215, 550, 'to melee attack', HUDFont);
    meleeAtkText.fixedToCamera = true;
 
    // rangedAtkIcon
    rangedAtkIcon = this.game.add.sprite(400, 540, 'rangedAtkButton');
    rangedAtkIcon.fixedToCamera = true;
-   rangedAtkText = game.add.text(450, 550, 'to ranged attack', {fontSize: '24px', fill: '#000'});
+   rangedAtkText = game.add.text(450, 550, 'to ranged attack', HUDFont);
    rangedAtkText.fixedToCamera = true;
 };
 
