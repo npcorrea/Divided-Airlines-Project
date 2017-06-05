@@ -4,7 +4,7 @@ Load.prototype =
 {
     init: function(){
         // add loading text
-        this.status = this.make.text(320, 350, 'Loading...', {font: 'Impact', fontSize: '48px', fill: 'white'});
+        this.status = this.make.text(320, 300, 'Loading...', {font: 'Cuprum', fontSize: '48px', fill: 'white'});
     },
     preload: function()
     {
