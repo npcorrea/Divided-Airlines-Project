@@ -94,6 +94,9 @@ function spawnEnemies(sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpaw
         spawnGroup.add(enemy);
     }
 
+    killHUD();
+    HUD();
+
     //Deactivate spawn triggers
     if (lock1Spawn)
     {
@@ -121,6 +124,9 @@ function spawnBoss()
     boss = new Boss(game, 'captain', -200, 500);
         game.add.existing(boss);
         aliveEnemies += 1;
+
+    killHUD();
+    HUD();
 
     if (lockBossSpawn)
     {

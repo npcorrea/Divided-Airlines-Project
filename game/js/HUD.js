@@ -9,13 +9,13 @@ function HUD()
    // scalpels
    scalpelIcon = this.game.add.sprite(325, 25, 'scalpelIcon');
    scalpelIcon.fixedToCamera = true;
-   scalpelText = game.add.text(360, 25, 'Scalpels: 0', {fontSize: '32px', fill: '#000'});
+   scalpelText = game.add.text(360, 25, 'Scalpels:', {fontSize: '32px', fill: '#000'});
    scalpelText.fixedToCamera = true;
 
    // pills
    pillIcon = this.game.add.sprite(575, 25, 'pillIcon');
    pillIcon.fixedToCamera = true;
-   pillText = game.add.text(610, 25, 'Pills: 0', {fontSize: '32px', fill: '#000'});
+   pillText = game.add.text(610, 25, 'Pills:', {fontSize: '32px', fill: '#000'});
    pillText.fixedToCamera = true;
 
    pillButton = this.game.add.sprite(650, 540, 'pillButton');
@@ -35,7 +35,7 @@ function HUD()
    rangedAtkIcon.fixedToCamera = true;
    rangedAtkText = game.add.text(450, 550, 'to ranged attack', {fontSize: '24px', fill: '#000'});
    rangedAtkText.fixedToCamera = true;
-}
+};
 
 function updateHUD()
 {
@@ -47,4 +47,19 @@ function updateHUD()
 
    // healthBar
    healthBar.crop.width = (playerHealth/playerMaxHealth) * healthBar.width;
-}
+};
+
+function killHUD()
+{
+    healthBar.kill();
+    scalpelIcon.kill();
+    scalpelText.kill();
+    pillIcon.kill();
+    pillText.kill();
+    pillButton.kill();
+    pillButtonText.kill();
+    meleeAtkIcon.kill();
+    meleeAtkText.kill();
+    rangedAtkIcon.kill();
+    rangedAtkText.kill();
+};

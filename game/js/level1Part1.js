@@ -26,7 +26,7 @@ Level1Part1.prototype =
         levelTimer.start();
 
         //Create door that triggers level transition
-        door = game.add.sprite(game.world.width - 165, game.world.height - 280, 'door');
+        door = game.add.sprite(game.world.width - 235, game.world.height - 445, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
@@ -66,7 +66,7 @@ Level1Part1.prototype =
     update: function()
     {
         updateHUD();
-        
+
         //Collision and overlap detection
         game.physics.arcade.overlap(player, door, transport1, null, this);
 
@@ -165,9 +165,9 @@ Level1Part1.prototype =
         //Activate healing
         if (healing.justPressed(healing))
         {
-            if (pills > 0)
+            if (pills > 0 && playerHealth + 1000 < playerMaxHealth)
             {
-                playerHealth += 3000;
+                playerHealth += 1000;
                 pills -= 1;
             }
         }

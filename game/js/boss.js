@@ -97,11 +97,11 @@ function bAttack ()
     {
         if (choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
         {
-            playerHealth -= 100;
+            playerHealth -= 10;
         }
         else if (choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
         {
-            playerHealth -= 50;
+            playerHealth -= 5;
         }
 
         player.tint = 0x770000;
