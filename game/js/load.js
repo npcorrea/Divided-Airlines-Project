@@ -2,6 +2,13 @@
 var Load = function(game) {};
 Load.prototype =
 {
+<<<<<<< Updated upstream
+=======
+    init: function(){
+        // add loading text
+        this.status = this.make.text(320, 300, 'Loading...', {font: 'Cuprum', fontSize: '48px', fill: 'white'});
+    },
+>>>>>>> Stashed changes
     preload: function()
     {
         //Load Backgrounds
