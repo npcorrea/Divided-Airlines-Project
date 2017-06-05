@@ -5,7 +5,6 @@
  var eIsLeft;
  var enemyAtkRange = 140;
  var eSpeed = 100;
- var defBound;
 
  function Enemy(game, key, x, y, frame)
  {
@@ -19,13 +18,13 @@
 
     if (key == 'SG')
     {
-        defBound = this.body.setSize(140, 256, 51, 0);
+        this.body.setSize(140, 256, 51, 0);
         this.animations.add('eRight', [0, 1, 2, 3, 4, 5], 8, true);
         this.animations.add('eAttack', [6, 7, 8, 9], 13, true);
     }
     else if (key == 'FA')
     {
-        defBound = this.body.setSize(90, 256, 103, 0);
+        this.body.setSize(90, 256, 103, 0);
         this.animations.add('eRight', [0, 1, 2, 3, 4, 5, 6, 7], 8, true);
         this.animations.add('eAttack', [8, 9, 10], 8, true);
     }
@@ -33,7 +32,6 @@
 
 Enemy.prototype.update = function()
 {
-
     game.physics.arcade.overlap(this, scalpel, eStab, null, this);
 
     // check for left or right
@@ -52,7 +50,6 @@ Enemy.prototype.update = function()
       if(this.x - player.x > enemyAtkRange) // if outside attack range
       {
          // left walking animation
-         defBound;
          this.animations.play('eRight');
          this.scale.x = -1;
 
@@ -74,7 +71,6 @@ Enemy.prototype.update = function()
       if(player.x - this.x > enemyAtkRange) // if outside attack range
       {
          // right walking animation
-         defBound;
          this.animations.play('eRight');
          this.scale.x = 1;
 
@@ -96,6 +92,7 @@ Enemy.prototype.update = function()
 function eAttack ()
 {
     this.tint = 0xFFFFFF;
+    player.tint = 0xFFFFFF;
 
     if (isAttacking)
     {
@@ -105,7 +102,7 @@ function eAttack ()
             this.tint = 0x770000;
         }
 
-        if(this.enemyHealth == 0)
+        if(this.enemyHealth < 0)
         {
             this.kill();
             aliveEnemies -= 1;
@@ -114,9 +111,10 @@ function eAttack ()
     else
     {
         playerHealth -= 10;
+        player.tint = 0x770000;
     }
 
-    if (playerHealth == 0)
+    if (playerHealth < 0)
     {
         game.state.start('Lose');
     }
@@ -124,10 +122,11 @@ function eAttack ()
 
 function eStab()
 {
+    player.tint = 0xFFFFFF;
     this.enemyHealth -= 100;
-    //scalpel.kill();
+    this.tint = 0x770000;
 
-    if (this.enemyHealth == 0)
+    if (this.enemyHealth < 0)
     {
         this.kill();
         aliveEnemies -= 1;

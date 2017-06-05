@@ -56,8 +56,6 @@ Level1Part3.prototype =
         a = game.input.keyboard.addKey(Phaser.Keyboard.A);
         s = game.input.keyboard.addKey(Phaser.Keyboard.S);
         d = game.input.keyboard.addKey(Phaser.Keyboard.D);
-
-        scalpels = 3;
     },
     update: function()
     {

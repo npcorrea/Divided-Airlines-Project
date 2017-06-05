@@ -14,11 +14,12 @@ var isAttacking = false;
 var isThrowing = false;
 var isLeft = false;
 var isRight = false;
+var bossAttacking = false;
 var spawnGroup;
 var key = false;
 var playerHealth = 10000;
 var pills = 3;
-var scalpels = 5;
+var scalpels = 15;
 
 var waveSize = 5;
 var aliveEnemies = 0;
@@ -52,7 +53,7 @@ var text1 = [
 	];
 var text2 = [
 	"Time to get my revenge.",
-    "I'm going to presribe them some medication.",
+    "I'm going to prescribe them some medication.",
     "Prescription?",
     "DEATH.		",
     "",
@@ -100,6 +101,7 @@ function again()
     isThrowing = false;
     isLeft = false;
     isRight = false;
+    bossAttacking = false;
     key = false;
     playerHealth = 10000;
     pills = 3;

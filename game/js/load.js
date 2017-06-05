@@ -21,8 +21,8 @@ Load.prototype =
         game.load.spritesheet('doctor', 'assets/img/DoctorWalkSpriteSheet.png', 256, 256);
         game.load.spritesheet('FA', 'assets/img/FAWalkAnimRight.png', 256, 256);
         game.load.spritesheet('SG', 'assets/img/SGWalkAnimRight.png', 256, 256);
+        game.load.spritesheet('captain', 'assets/img/CaptainSpritesheet.png', 1024, 512);
 
-        game.load.image('BOSSstar', 'assets/img/BOSSstar.png');
         game.load.image('scalpel', 'assets/img/scalpel.png');
 
         //Load Sounds
@@ -111,7 +111,7 @@ function spawnEnemies(sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpaw
 
 function spawnBoss()
 {
-    boss = new Boss(game, 'BOSSstar', 300, 350);
+    boss = new Boss(game, 'captain', -200, 500);
         game.add.existing(boss);
         aliveEnemies += 1;
 
@@ -132,7 +132,7 @@ function scorpipain()
 {
     playerHealth -= 1;
 
-    if (playerHealth == 0)
+    if (playerHealth < 0)
     {
         game.state.start('Lose');
     }
@@ -174,4 +174,4 @@ function done()
 function done2()
 {
     isAttacking = false;
-}
+};

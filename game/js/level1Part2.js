@@ -15,7 +15,7 @@ Level1Part2.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 3 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -55,8 +55,6 @@ Level1Part2.prototype =
         a = game.input.keyboard.addKey(Phaser.Keyboard.A);
         s = game.input.keyboard.addKey(Phaser.Keyboard.S);
         d = game.input.keyboard.addKey(Phaser.Keyboard.D);
-
-        scalpels = 3;
     },
     update: function()
     {
@@ -287,7 +285,7 @@ Level1Part2.prototype =
         }
 
         //Screen Lock Boss trigger
-        if ((player.body.x < 525) && lockBossPending && key)
+        if ((player.body.x < 600) && lockBossPending && key)
         {
             lockBoss = true;
         }
@@ -299,9 +297,9 @@ Level1Part2.prototype =
             game.camera.deadzone = new Phaser.Rectangle(0, 0, 800, 600);
 
             //Lock bounds
-            if (player.body.x > 800)
+            if (player.body.x > 928)
             {
-                player.body.x = 800;
+                player.body.x = 928;
             }
 
             //Create Boss
@@ -326,7 +324,6 @@ Level1Part2.prototype =
     },
       //This is for printing out time
       render: function() {
-
       //Prints out the timer
       if (levelTimer.running) {
               game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#ffffff");
