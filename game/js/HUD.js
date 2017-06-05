@@ -35,16 +35,31 @@ function HUD()
    rangedAtkIcon.fixedToCamera = true;
    rangedAtkText = game.add.text(450, 550, 'to ranged attack', HUDFont);
    rangedAtkText.fixedToCamera = true;
-}
+};
 
 function updateHUD()
 {
    // when the player uses a scalpel
-   scalpelText = 'Scalpels: ' + scalpels;
+   scalpelText.text = 'Scalpels: ' + scalpels;
 
    // when the player uses a pill
-   pillText = 'Pills: ' + pills;
+   pillText.text = 'Pills: ' + pills;
 
    // healthBar
    healthBar.crop.width = (playerHealth/playerMaxHealth) * healthBar.width;
-}
+};
+
+function killHUD()
+{
+    healthBar.kill();
+    scalpelIcon.kill();
+    scalpelText.kill();
+    pillIcon.kill();
+    pillText.kill();
+    pillButton.kill();
+    pillButtonText.kill();
+    meleeAtkIcon.kill();
+    meleeAtkText.kill();
+    rangedAtkIcon.kill();
+    rangedAtkText.kill();
+};

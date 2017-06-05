@@ -21,7 +21,7 @@ Level1Part2.prototype =
         levelTimer.start();
 
         //Create door that triggers level transition
-        door = game.add.sprite(200, game.world.height - 280, 'door');
+        door = game.add.sprite(135, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
@@ -167,9 +167,9 @@ Level1Part2.prototype =
         //Activate healing
         if (healing.justPressed(healing))
         {
-            if (pills > 0)
+            if (pills > 0 && playerHealth + 1000 < playerMaxHealth)
             {
-                playerHealth += 3000;
+                playerHealth += 1000;
                 pills -= 1;
             }
         }
