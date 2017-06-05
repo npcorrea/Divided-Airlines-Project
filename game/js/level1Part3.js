@@ -15,7 +15,7 @@ Level1Part3.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *30, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -33,7 +33,11 @@ Level1Part3.prototype =
         game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT, 0.75, 0.75);
 
         //Player Animation
-        player.animations.add('right', null, 13, true);
+        player.animations.add('right', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 13, true);
+        let hammer = player.animations.add('hammer', [10, 11, 12], 8, false);
+        hammer.onComplete.add(done2, this);
+        let tossing = player.animations.add('toss', [13, 14, 15], 13, false);
+        tossing.onComplete.add(done, this);
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
@@ -45,13 +49,20 @@ Level1Part3.prototype =
 
         //Attack Keys
         sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.X);
-        healing = game.input.keyboard.addKey(Phaser.Keyboard.C);
+        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.E);
+        healing = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
-        scalpels = 5;
+        w = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        a = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        d = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+        HUD();
     },
     update: function()
     {
+        updateHUD();
+        
         //Collision and overlap detection
         game.physics.arcade.overlap(player, door, transport3, null, this);
 
@@ -60,13 +71,17 @@ Level1Part3.prototype =
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
-        if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp)
+        if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
+             && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
         {
-            player.animations.stop();
+            if (!isAttacking && !isThrowing)
+            {
+                player.frame = 16;
+            }
         }
 
         //Left
-        if (cursors.left.isDown)
+        if ((cursors.left.isDown || aKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = -150;
             player.animations.play('right');
@@ -76,7 +91,7 @@ Level1Part3.prototype =
         }
 
         //Right
-        if (cursors.right.isDown)
+        if ((cursors.right.isDown || dKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = 150;
             player.animations.play('right');
@@ -86,7 +101,7 @@ Level1Part3.prototype =
         }
 
         //Up
-        if (cursors.up.isDown)
+        if ((cursors.up.isDown || wKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = -150;
 
@@ -103,7 +118,7 @@ Level1Part3.prototype =
         }
 
         //Down
-        if (cursors.down.isDown)
+        if ((cursors.down.isDown || sKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = 150;
 
@@ -132,20 +147,17 @@ Level1Part3.prototype =
         }
 
         //Activate close-range attack
-        if (sAttack.isDown)
+        if (sAttack.justPressed(sAttack))
         {
-            player.tint = 0x770000;
             isAttacking = true;
-        }
-        else
-        {
-            player.tint = 0xFFFFFF;
-            isAttacking = false;
+            player.animations.play('hammer');
         }
 
         //Activate long-range attack
         if (lAttack.justPressed(lAttack))
         {
+            isThrowing = true;
+            player.animations.play('toss');
             if (scalpels > 0)
             {
                 scalpelThrow();

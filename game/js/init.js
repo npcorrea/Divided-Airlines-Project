@@ -11,15 +11,17 @@ var sAttack;
 var emitter;
 var scalpel;
 var isAttacking = false;
+var isThrowing = false;
 var isLeft = false;
 var isRight = false;
+var bossAttacking = false;
 var spawnGroup;
 var key = false;
 var playerHealth = 10000;
 var pills = 3;
 var scalpels = 5;
 
-var waveSize = 1;
+var waveSize = 5;
 var aliveEnemies = 0;
 
 var lock1 = false;
@@ -42,6 +44,19 @@ var lockBoss = false;
 var lockBossPending = true;
 var lockBossSpawn = true;
 
+var healthBar;
+var scalpeIcon;
+var scalpelText;
+var pillIcon;
+var pillText;
+var pillButton;
+var pillButtonText;
+var meleeAtkIcon;
+var meleeAtkText;
+var rangedAtkIcon;
+var rangedAtkText;
+var playerMaxHealth = 10000;
+
 var text1 = [
     "They beat me up... humiliated me... denied me a seat.",
     "But now now I'm back and I'm taking matters into ",
@@ -51,7 +66,7 @@ var text1 = [
 	];
 var text2 = [
 	"Time to get my revenge.",
-    "I'm going to presribe them some medication.",
+    "I'm going to prescribe them some medication.",
     "Prescription?",
     "DEATH.		",
     "",
@@ -89,4 +104,45 @@ game.state.start('Load');
 //Call this to go to the losing state
 function goToLoseState(){
   game.state.start('Lose');
+}
+
+// Replay the game
+function again()
+{
+    //Reset Variables
+    isAttacking = false;
+    isThrowing = false;
+    isLeft = false;
+    isRight = false;
+    bossAttacking = false;
+    key = false;
+    playerHealth = 10000;
+    pills = 3;
+    scalpels = 5;
+
+    waveSize = 5;
+    aliveEnemies = 0;
+
+    lock1 = false;
+    lock1Pending = true;
+    lock1Spawn = true;
+
+    lock2 = false;
+    lock2Pending = true;
+    lock2Spawn = true;
+
+    lock3 = false;
+    lock3Pending = true;
+    lock3Spawn = true;
+
+    lock4 = false;
+    lock4Pending = true;
+    lock4Spawn = true;
+
+    lockBoss = false;
+    lockBossPending = true;
+    lockBossSpawn = true;
+
+    //Move to MainMenu
+    game.state.start('Level1Part1');
 }
