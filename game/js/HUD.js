@@ -54,15 +54,15 @@ function HUD()
 
    // inventory displays
    // scalpels
-   scalpelIcon = this.game.add.sprite(325, 25, 'scalpelIcon');
+   scalpelIcon = this.game.add.sprite(400, 25, 'scalpelIcon');
    scalpelIcon.fixedToCamera = true;
-   scalpelText = game.add.text(360, 25, 'Scalpels: 0', HUDFont);
+   scalpelText = game.add.text(435, 25, 'Scalpels: 0', HUDFont);
    scalpelText.fixedToCamera = true;
 
    // pills
-   pillIcon = this.game.add.sprite(575, 25, 'pillIcon');
+   pillIcon = this.game.add.sprite(615, 25, 'pillIcon');
    pillIcon.fixedToCamera = true;
-   pillText = game.add.text(610, 25, 'Pills: 0', HUDFont);
+   pillText = game.add.text(650, 25, 'Pills: 0', HUDFont);
    pillText.fixedToCamera = true;
 
    pillButton = this.game.add.sprite(650, 540, 'pillButton');
