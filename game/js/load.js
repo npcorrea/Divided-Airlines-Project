@@ -2,8 +2,15 @@
 var Load = function(game) {};
 Load.prototype =
 {
+    init: function(){
+        // add loading text
+        this.status = this.make.text(320, 300, 'Loading...', {font: 'Cuprum', fontSize: '48px', fill: 'white'});
+    },
     preload: function()
     {
+        // load preload screen, make bar preloader
+        game.add.existing(this.status);
+
         //Load Backgrounds
         game.load.image('MenuBG', 'assets/img/TitleArt.png');
         game.load.image('Face', 'assets/img/DoctorFace.png');
@@ -40,8 +47,13 @@ Load.prototype =
         //Start Physics
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        this.status.setText('Ready!');
+
         //Move to MainMenu
-        game.state.start('MainMenu');
+        setTimeout(function () {
+            game.state.start('MainMenu');
+        }, 1000);
+        
     }
 };
 
