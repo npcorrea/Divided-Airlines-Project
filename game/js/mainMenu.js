@@ -7,18 +7,14 @@ MainMenu.prototype =
         //Background
         game.background = game.add.image(0,0,'MenuBG');
 
-        //Instructions
-        game.add.text(225, 450, "Press/Hold SPACE to attack",
-            {font: '30px Arial', fill: '#ffffff'});
+        // add menu options
+        var startText = new AddOption(game, 350, 350, 'Play', 'Cutscene');
+        game.add.existing(startText);
 
-        //Centered Play Button
-        playButton = game.add.button(400, 350, 'play', this.playTime, this);
-        playButton.anchor.x = 0.5;
-        playButton.anchor.y = 0.5;
+        var instrText = new AddOption(game, 290, 430, 'Instructions', 'Instructions');
+        game.add.existing(instrText);
+
+        //var sceneText = new AddOption(game, 290, 510, 'Cutscene', 'Cutscene');
+        //game.add.existing(sceneText);
     },
-    playTime: function()
-    {
-        //Starts game on button press
-        game.state.start('Level1Part1');
-    }
 };
