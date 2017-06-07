@@ -24,7 +24,16 @@ Load.prototype =
         game.load.image('door', 'assets/img/TheBESTdoor.png');
         game.load.image('star', 'assets/img/star.png');
 
-        game.load.image('healthBar', 'assets/img/healthBarSmall.png', 256, 40);
+        game.load.image('h1','assets/img/Heart.png',32,32);
+        game.load.image('h2','assets/img/Heart.png',32,32);
+        game.load.image('h3','assets/img/Heart.png',32,32);
+        game.load.image('h4','assets/img/Heart.png',32,32);
+        game.load.image('h5','assets/img/Heart.png',32,32);
+        game.load.image('h6','assets/img/Heart.png',32,32);
+        game.load.image('h7','assets/img/Heart.png',32,32);
+        game.load.image('h8','assets/img/Heart.png',32,32);
+        game.load.image('h9','assets/img/Heart.png',32,32);
+        game.load.image('h10','assets/img/Heart.png',32,32);
         game.load.image('scalpelIcon', 'assets/img/scalpelHUD.png', 32, 32);
         game.load.image('pillIcon', 'assets/img/pillHUD.png', 32, 32);
         game.load.image('pillButton', 'assets/img/rButtonHUD.png', 32, 32);
@@ -53,7 +62,7 @@ Load.prototype =
         setTimeout(function () {
             game.state.start('MainMenu');
         }, 1000);
-        
+
     }
 };
 
