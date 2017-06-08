@@ -15,16 +15,19 @@
     this.anchor.set(.5);
     game.physics.enable(this);
     this.enemyHealth = 500;
+    this.defBound;
 
     if (key == 'SG')
     {
-        this.body.setSize(140, 256, 51, 0);
+        this.defBound = this.body.setSize(140, 70, 51, 55);
+        this.atkBound = this.body.setSize(205, 110, 51, 0);
         this.animations.add('eRight', [0, 1, 2, 3, 4, 5], 8, true);
         this.animations.add('eAttack', [6, 7, 8, 9], 13, true);
     }
     else if (key == 'FA')
     {
-        this.body.setSize(90, 256, 103, 0);
+        this.defBound = this.body.setSize(90, 75, 103, 50);
+        this.atkBound = this.body.setSize(256, 75, 0, 50);
         this.animations.add('eRight', [0, 1, 2, 3, 4, 5, 6, 7], 8, true);
         this.animations.add('eAttack', [8, 9, 10], 8, true);
     }
@@ -45,11 +48,12 @@ Enemy.prototype.update = function()
     }
 
    // basic AI for enemy movement
-   if(eIsLeft)
+    if(eIsLeft)
    {
       if(this.x - player.x > enemyAtkRange) // if outside attack range
       {
          // left walking animation
+         this.defBound;
          this.animations.play('eRight');
          this.scale.x = -1;
 
@@ -58,7 +62,7 @@ Enemy.prototype.update = function()
       }
       else if (this.x - player.x > 0 && (player.x - player.x < enemyAtkRange)) // if within attack range
       {
-         this.body.setSize(256, 256, 0, 0);
+         this.atkBound;
          this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
@@ -71,6 +75,7 @@ Enemy.prototype.update = function()
       if(player.x - this.x > enemyAtkRange) // if outside attack range
       {
          // right walking animation
+         this.defBound;
          this.animations.play('eRight');
          this.scale.x = 1;
 
@@ -79,7 +84,7 @@ Enemy.prototype.update = function()
       }
       else if (player.x - this.x > 0 && (player.x - this.x < enemyAtkRange))// if within attack range
       {
-         this.body.setSize(256, 256, 0, 0);
+         this.atkBound;
          this.animations.play('eAttack');
          this.body.velocity.x = 0;
          this.body.velocity.y = 0;
@@ -91,15 +96,21 @@ Enemy.prototype.update = function()
 // Combat resolution
 function eAttack ()
 {
-    this.tint = 0xFFFFFF;
-    player.tint = 0xFFFFFF;
-
     if (isAttacking)
     {
         if ((isRight && (player.x < this.x)) || (isLeft && (this.x < player.x)))
         {
-            this.enemyHealth -= 10;
-            this.tint = 0x770000;
+            this.enemyHealth -= 150;
+            game.hammerSfx.play('', 0, 0.2, false);
+
+            if (player.x < this.x)
+            {
+                    game.add.tween(this).to( { x: '+300'}, 500, Phaser.Easing.Linear.None, true);
+            }
+            else
+            {
+                    game.add.tween(this).to( { x: '-300'}, 500, Phaser.Easing.Linear.None, true);
+            }
         }
 
         if(this.enemyHealth < 0)
@@ -110,8 +121,13 @@ function eAttack ()
     }
     else
     {
-        playerHealth -= 10;
+        playerHealth -= 50;
         player.tint = 0x770000;
+
+        if (!game.painSfx.isPlaying)
+        {
+            game.painSfx.play('', 0, 0.2, false);
+        }
     }
 
     if (playerHealth < 0)
@@ -122,9 +138,7 @@ function eAttack ()
 
 function eStab()
 {
-    player.tint = 0xFFFFFF;
     this.enemyHealth -= 100;
-    this.tint = 0x770000;
 
     if (this.enemyHealth < 0)
     {

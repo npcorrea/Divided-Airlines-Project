@@ -3,6 +3,9 @@ var Cutscene = function(game) {};
 Cutscene.prototype =
 {
 	create: function(){
+        game.menuMusic.stop();
+        game.cutsceneMusic.play('', 0, 0.1, true);
+
 		game.background = game.add.image(0,0,'Face');
 		text = game.add.text(400, 200, '', { font: "17px Cuprum", fill: "#bababa" });
 		skip = game.add.text(500, 550, 'Press SPACE to skip cutscene.', {font: "15px Cuprum", fill: "#bababa"});
@@ -31,7 +34,6 @@ Cutscene.prototype =
 	        else {
 	        	// increment n to retrieve next array of text from textBlock array
 	        	n++;
-	        	console.log('n = ' + n);
 	        	content = textBlock[n];
 	       		lineIndex = 0;
 	        	text.setText("");

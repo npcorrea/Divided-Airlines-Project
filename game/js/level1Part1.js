@@ -4,10 +4,12 @@ Level1Part1.prototype =
 {
     create: function()
     {
-        //Make it rock in here
-        game.music = game.add.audio('music');
-        //game.music.play('', 1, 1, true);
-        game.music.volume = 0.2;
+        //Music
+        game.cutsceneMusic.stop();
+        game.winMusic.stop();
+        game.loseMusic.stop();
+        
+        game.bgMusic.play('', 0, 0.2, true);
 
         //Set some boundries
         game.world.setBounds(0,0,1600,600);
@@ -20,7 +22,7 @@ Level1Part1.prototype =
 
         //Create a delayed event 30s from now
         //Change later. 30s for testing
-        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *45, this.endLevelTimer, this);
+        levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND *15, this.endLevelTimer, this);
 
         //Start the timer
         levelTimer.start();
@@ -45,7 +47,7 @@ Level1Part1.prototype =
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
-        player.body.setSize(120, 230, 70, 15);
+        player.body.setSize(120, 75, 70, 70);
         player.body.collideWorldBounds = true;
 
         //Input manager
@@ -75,6 +77,11 @@ Level1Part1.prototype =
         //Defaults
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
+
+        if (!isAttacking)
+        {
+            player.tint = 0xFFFFFF;
+        }
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
              && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
@@ -140,13 +147,13 @@ Level1Part1.prototype =
         }
 
         //Floor Constraints
-        if (player.body.y < 185)
+        if (player.body.y < 195)
         {
-            player.body.y = 185;
+            player.body.y = 195;
         }
 
         //Activate close-range attack
-        if (sAttack.justPressed(sAttack))
+        if (sAttack.justPressed(sAttack) && !isThrowing)
         {
             isAttacking = true;
             player.animations.play('hammer');
@@ -177,6 +184,10 @@ Level1Part1.prototype =
         if ((player.body.x < 1200 && player.body.x > 1136) && lock1Pending)
         {
             lock1 = true;
+
+            //Begin battle music!
+            game.bgMusic.stop();
+            game.battleMusic.play('', 0, 0.2, true);
         }
 
         //Screen Lock 1
@@ -198,11 +209,13 @@ Level1Part1.prototype =
                 lock1Pending = false;
             }
 
-            game.physics.arcade.collide(spawnGroup, spawnGroup);
-
             //Release lock
             if (aliveEnemies == 0 && !lock1Spawn)
             {
+                //Calm time
+                game.battleMusic.stop();
+                game.bgMusic.play('', 0, 0.2, true);
+
                 lock1 = false;
             }
         }
@@ -215,7 +228,6 @@ Level1Part1.prototype =
 
       //This is for printing out time
       render: function() {
-
       //Prints out the timer
       if (levelTimer.running) {
               game.debug.text("Time left: " + this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");
