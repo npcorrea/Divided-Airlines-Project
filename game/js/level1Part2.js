@@ -61,6 +61,7 @@ Level1Part2.prototype =
     update: function()
     {
         updateHUD();
+        updateHealth();
 
         //Collision and overlap detection
         game.physics.arcade.overlap(player, door, transport2, null, this);
@@ -334,19 +335,16 @@ Level1Part2.prototype =
           }
       //If the timer reaches 0, print this out
           else {
-              //goToLoseState();
-              //game.state.start('Lose');
-              //game.debug.text("Time's up!", 32,32, '#ff0000');
+
           }
       },
       endLevelTimer: function() {
           //This stops the timer when the delayed event triggers
           levelTimer.stop();
-          //game.debug.text("Time's up!", 32,32, '#ff0000');
           goToLoseState();
       },
       formatLevelTime: function(s) {
-          //This converts the seconds (s) to a nicely formatted and padded time string
+          //This converts the seconds (s) to a formatted and padded time string
           var minutes = "0" + Math.floor(s / 60);
           var seconds = "0" + (s - minutes * 60);
           return minutes.substr(-2) + ":" + seconds.substr(-2);
