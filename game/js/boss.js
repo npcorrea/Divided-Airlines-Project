@@ -5,7 +5,6 @@ Boss.prototype.constructor = Boss;
 var bSpeed = 100;
 var bossDefBound;
 var bossAtkRange = 5;
-var choice;
 
 function Boss(game,key, x, y, frame) {
       // call to Phaser.Sprite // new Sprite(this, game, x, y, key, frame)
@@ -16,6 +15,7 @@ function Boss(game,key, x, y, frame) {
       this.anchor.x = 0;
       this.anchor.y = .75;
       this.bossHealth = 5000;
+      this.choice;
 
       //Bounding box
       bossDefBound = this.body.setSize(800, 235, 32, 222);
@@ -23,9 +23,9 @@ function Boss(game,key, x, y, frame) {
       //Animations //Frame 33 is idle
       this.animations.add('walk', [25, 26, 27, 28, 29, 30, 31, 32, 33], 8, true);
       let beam = this.animations.add('beam', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 8, false);
-      beam.onComplete.add(bossTimer, this);
+      beam.onComplete.add(bossDone, this);
       let sting = this.animations.add('sting', [18, 19, 20, 21, 22, 23, 24], 8, false);
-      sting.onComplete.add(bossTimer, this);
+      sting.onComplete.add(bossDone, this);
 }
 
 Boss.prototype.update = function(){
@@ -62,7 +62,39 @@ Boss.prototype.update = function(){
       }
 
       //Check for collision
-      game.physics.arcade.collide(this, player, bAttack, null, this);
+      if (isAttacking && player.x < 680) {
+          //Checking if the player is facing away or towards the boss.
+          if (isLeft && (this.x < player.x))
+          {
+              this.bossHealth -= 10;
+          }
+
+          if(this.bossHealth < 0)
+          {
+              this.kill();
+              bossAttacking = false;
+              aliveEnemies -= 1;
+          }
+      }
+
+      if(bossAttacking)
+      {
+          if (choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
+          {
+              playerHealth -= 10;
+          }
+          else if (choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
+          {
+              playerHealth -= 5;
+          }
+
+          player.tint = 0x770000;
+      }
+
+      if (playerHealth < 0)
+      {
+          game.state.start('Lose');
+      }
    }
 
    //Lock player
@@ -75,49 +107,12 @@ Boss.prototype.update = function(){
 // The attack functions
 function bAttack ()
 {
-    this.tint = 0xFFFFFF;
-    player.tint = 0xFFFFFF;
 
-    if (isAttacking && player.x < 680) {
-        //Checking if the player is facing away or towards the boss.
-        if (isLeft && (this.x < player.x))
-        {
-            this.bossHealth -= 10;
-            this.tint = 0x770000;
-        }
-
-        if(this.bossHealth < 0)
-        {
-            this.kill();
-            aliveEnemies -= 1;
-        }
-    }
-
-    if(bossAttacking)
-    {
-        if (choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-        {
-            playerHealth -= 10;
-        }
-        else if (choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-        {
-            playerHealth -= 5;
-        }
-
-        player.tint = 0x770000;
-    }
-
-    if (playerHealth < 0)
-    {
-        game.state.start('Lose');
-    }
 };
 
 //If the player hits the boss with a scalpal.
 function bStab() {
     //Lowers the boss health if it hits.
-    player.tint = 0xFFFFFF;
-    this.tint = 0x770000;
     this.bossHealth -= 10;
 
     //If the boss health goes to zero, it dies.
@@ -130,13 +125,6 @@ function bStab() {
 
 function bossDone()
 {
-    bossAttacking = false;
-    player.tint = 0xFFFFFF;
-};
-
-function bossTimer()
-{
     game.physics.arcade.overlap(this, scalpel, bStab, null, this);
-    bossTimer = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND * 2, bossDone, this);
-    bossTimer.start;
+    bossAttacking = false;
 };
