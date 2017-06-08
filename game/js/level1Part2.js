@@ -40,7 +40,7 @@ Level1Part2.prototype =
 
         //Player properties
         game.physics.arcade.enable(player); //Physics for Player
-        player.body.setSize(120, 230, 70, 15);
+        player.body.setSize(120, 75, 70, 70);
         player.body.collideWorldBounds = true;
 
         //Input manager
@@ -71,6 +71,11 @@ Level1Part2.prototype =
         //Defaults
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
+
+        if (!isAttacking)
+        {
+            player.tint = 0xFFFFFF;
+        }
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
              && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
@@ -136,9 +141,9 @@ Level1Part2.prototype =
         }
 
         //Floor Constraints
-        if (player.body.y < 185)
+        if (player.body.y < 195)
         {
-            player.body.y = 185;
+            player.body.y = 195;
         }
 
         //Door Constraints
@@ -148,7 +153,7 @@ Level1Part2.prototype =
         }
 
         //Activate close-range attack
-        if (sAttack.justPressed(sAttack))
+        if (sAttack.justPressed(sAttack) && !isThrowing)
         {
             isAttacking = true;
             player.animations.play('hammer');
@@ -179,6 +184,10 @@ Level1Part2.prototype =
         if ((player.body.x < 400 && player.body.x > 336) && lock2Pending)
         {
             lock2 = true;
+
+            //Begin battle music!
+            game.bgMusic.stop();
+            game.battleMusic.play('', 0, 0.2, true);
         }
 
         //Screen Lock 2
@@ -200,11 +209,13 @@ Level1Part2.prototype =
                 lock2Pending = false;
             }
 
-            game.physics.arcade.collide(spawnGroup, spawnGroup);
-
             //Release lock
             if (aliveEnemies == 0 && !lock2Spawn)
             {
+                //Calm time
+                game.battleMusic.stop();
+                game.bgMusic.play('', 0, 0.2, true);
+
                 lock2 = false;
             }
         }
@@ -213,6 +224,10 @@ Level1Part2.prototype =
         if ((player.body.x < 1200 && player.body.x > 1136) && lock3Pending)
         {
             lock3 = true;
+
+            //Begin battle music!
+            game.bgMusic.stop();
+            game.battleMusic.play('', 0, 0.2, true);
         }
 
         //Screen Lock 3
@@ -239,11 +254,13 @@ Level1Part2.prototype =
                 lock3Pending = false;
             }
 
-            game.physics.arcade.collide(spawnGroup, spawnGroup);
-
             //Release lock
             if (aliveEnemies == 0 && !lock3Spawn)
             {
+                //Calm time
+                game.battleMusic.stop();
+                game.bgMusic.play('', 0, 0.2, true);
+
                 lock3 = false;
             }
         }
@@ -252,6 +269,10 @@ Level1Part2.prototype =
         if ((player.body.x < 2000 && player.body.x > 1936) && lock4Pending)
         {
             lock4 = true;
+
+            //Begin battle music!
+            game.bgMusic.stop();
+            game.battleMusic.play('', 0, 0.2, true);
         }
 
         //Screen Lock 4
@@ -278,11 +299,13 @@ Level1Part2.prototype =
                 lock4Pending = false;
             }
 
-            game.physics.arcade.collide(spawnGroup, spawnGroup);
-
             //Release lock
             if (aliveEnemies == 0 && !lock4Spawn)
             {
+                //Calm time
+                game.battleMusic.stop();
+                game.bossMusic.play('', 0, 0.2, true);
+
                 lock4 = false;
                 key = true;
                 scorprain();
@@ -317,6 +340,10 @@ Level1Part2.prototype =
             //Release lock
             if (aliveEnemies == 0 && !lockBossSpawn)
             {
+                //Calm time
+                game.bossMusic.stop();
+                game.bgMusic.play('', 0, 0.2, true);
+
                 lockBoss = false;
             }
         }
@@ -329,6 +356,12 @@ Level1Part2.prototype =
     },
       //This is for printing out time
       render: function() {
+          game.debug.body(player);
+
+          if (lock2)
+          {
+              game.debug.body(enemy);
+          }
       //Prints out the timer
       if (levelTimer.running) {
               game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");
