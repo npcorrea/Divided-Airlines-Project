@@ -6,6 +6,9 @@ Win.prototype =
     {
         game.bgMusic.stop();
         game.battleMusic.stop();
+        game.bossMusic.stop();
+
+        game.winMusic.play('', 0, 0.2, true);
 
         //Prompt for Replay
         game.add.text(230, 200, "You won: Restart?",

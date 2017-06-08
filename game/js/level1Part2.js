@@ -307,9 +307,14 @@ Level1Part2.prototype =
                 game.bossMusic.play('', 0, 0.2, true);
 
                 lock4 = false;
-                key = true;
+                makeKey();
                 scorprain();
             }
+        }
+
+        if (!lock4Spawn)
+        {
+            game.physics.arcade.overlap(player, endKey, getKey, null, this);
         }
 
         //Screen Lock Boss trigger
@@ -356,12 +361,6 @@ Level1Part2.prototype =
     },
       //This is for printing out time
       render: function() {
-          game.debug.body(player);
-
-          if (lock2)
-          {
-              game.debug.body(enemy);
-          }
       //Prints out the timer
       if (levelTimer.running) {
               game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");

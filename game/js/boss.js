@@ -47,54 +47,30 @@ Boss.prototype.update = function(){
        this.body.velocity.y = 0;
 
       //Choose an attack (sting or beam)
-      choice = game.rnd.integerInRange(0,100);
+      this.choice = game.rnd.integerInRange(0,100);
 
       //Play correct animation
-      if (choice < 75 && !bossAttacking)
+      if (this.choice < 75 && !bossAttacking)
       {
           bossAttacking = true;
           this.animations.play('sting');
+          if (!game.laserSfx.isPlaying && !game.stingSfx.isPlaying)
+          {
+              game.stingSfx.play('', 0, 0.2, false);
+          }
       }
-      else if(choice >= 75 && !bossAttacking)
+      else if(this.choice >= 75 && !bossAttacking)
       {
           bossAttacking = true;
           this.animations.play('beam');
+          if (!game.laserSfx.isPlaying && !game.stingSfx.isPlaying)
+          {
+              game.laserSfx.play('', 0, 0.2, false);
+          }
       }
 
       //Check for collision
-      if (isAttacking && player.x < 680) {
-          //Checking if the player is facing away or towards the boss.
-          if (isLeft && (this.x < player.x))
-          {
-              this.bossHealth -= 10;
-          }
-
-          if(this.bossHealth < 0)
-          {
-              this.kill();
-              bossAttacking = false;
-              aliveEnemies -= 1;
-          }
-      }
-
-      if(bossAttacking)
-      {
-          if (choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-          {
-              playerHealth -= 10;
-          }
-          else if (choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-          {
-              playerHealth -= 5;
-          }
-
-          player.tint = 0x770000;
-      }
-
-      if (playerHealth < 0)
-      {
-          game.state.start('Lose');
-      }
+      game.physics.arcade.collide(this, player, bAttack, null, this);
    }
 
    //Lock player
@@ -107,7 +83,51 @@ Boss.prototype.update = function(){
 // The attack functions
 function bAttack ()
 {
+    if (isAttacking && player.x < 680) {
+        //Checking if the player is facing away or towards the boss.
+        if (isLeft && (this.x < player.x))
+        {
+            this.bossHealth -= 10;
+            game.hammerSfx.play('', 0, 0.2, false);
+        }
 
+        if(this.bossHealth < 0)
+        {
+            this.kill();
+            aliveEnemies -= 1;
+        }
+    }
+
+    if(bossAttacking)
+    {
+        if (this.choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
+        {
+            playerHealth -= 10;
+
+            if (!game.painSfx.isPlaying)
+            {
+                game.painSfx.play('', 0, 0.2, false);
+            }
+            
+            player.tint = 0x770000;
+        }
+        else if (this.choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
+        {
+            playerHealth -= 5;
+
+            if (!game.painSfx.isPlaying)
+            {
+                game.painSfx.play('', 0, 0.2, false);
+            }
+
+            player.tint = 0x770000;
+        }
+    }
+
+    if (playerHealth < 0)
+    {
+        game.state.start('Lose');
+    }
 };
 
 //If the player hits the boss with a scalpal.
@@ -125,6 +145,9 @@ function bStab() {
 
 function bossDone()
 {
+    game.laserSfx.stop();
+    game.stingSfx.stop();
+
     game.physics.arcade.overlap(this, scalpel, bStab, null, this);
     bossAttacking = false;
 };

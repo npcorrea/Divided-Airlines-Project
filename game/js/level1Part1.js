@@ -6,6 +6,9 @@ Level1Part1.prototype =
     {
         //Music
         game.cutsceneMusic.stop();
+        game.winMusic.stop();
+        game.loseMusic.stop();
+        
         game.bgMusic.play('', 0, 0.2, true);
 
         //Set some boundries

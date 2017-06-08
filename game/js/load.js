@@ -40,12 +40,13 @@ Load.prototype =
         game.load.spritesheet('FA', 'assets/img/FAWalkAnimRight.png', 256, 256);
         game.load.spritesheet('SG', 'assets/img/SGWalkAnimRight.png', 256, 256);
         game.load.spritesheet('captain', 'assets/img/CaptainSpritesheet.png', 1024, 512);
+        game.load.spritesheet('simon', 'assets/img/Simon.png', 256, 256);
 
         //Load Music
         game.load.audio('menuMusic', ['assets/audio/menuMusic.mp3', 'assets/audio/menuMusic.ogg']);
         game.load.audio('cutsceneMusic', ['assets/audio/cutscenebg.mp3', 'assets/audio/cutscenebg.ogg']);
-        //game.load.audio('winMusic', ['assets/audio/win.mp3', 'assets/audio/win.ogg']);
-        //game.load.audio('loseMusic', ['assets/audio/lose.mp3', 'assets/audio/lose.ogg']);
+        game.load.audio('winMusic', ['assets/audio/winbg.mp3', 'assets/audio/winbg.ogg']);
+        game.load.audio('loseMusic', ['assets/audio/lossbg.mp3', 'assets/audio/lossbg.ogg']);
 
         game.load.audio('bgMusic', ['assets/audio/bgm.mp3', 'assets/audio/bgm.ogg']);
         game.load.audio('battleMusic', ['assets/audio/battleMusic.mp3', 'assets/audio/battleMusic.ogg']);
@@ -68,8 +69,8 @@ Load.prototype =
         //Add Music
         game.menuMusic = game.add.audio('menuMusic');
         game.cutsceneMusic = game.add.audio('cutsceneMusic');
-        //game.winMusic = game.add.audio('winMusic');
-        //game.loseMusic = game.add.audio('loseMusic');
+        game.winMusic = game.add.audio('winMusic');
+        game.loseMusic = game.add.audio('loseMusic');
 
         game.bgMusic = game.add.audio('bgMusic');
         game.battleMusic = game.add.audio('battleMusic');
@@ -129,7 +130,7 @@ function spawnEnemies(sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpaw
         for (let i = 0; i < waveSize; i++)
         {
             enemy = new Enemy(game, sprite, game.rnd.integerInRange(leftXMin,leftXMax),
-                game.rnd.integerInRange(400,600));
+                game.rnd.integerInRange(250,600));
             game.add.existing(enemy);
             aliveEnemies += 1;
             spawnGroup.add(enemy);
@@ -139,7 +140,7 @@ function spawnEnemies(sprite, leftXMin, leftXMax, rightXMin, rightXMax, leftSpaw
     for (let j = 0; j < waveSize; j++)
     {
         enemy = new Enemy(game, sprite, game.rnd.integerInRange(rightXMin,rightXMax),
-            game.rnd.integerInRange(400,600));
+            game.rnd.integerInRange(250,600));
         game.add.existing(enemy);
         aliveEnemies += 1;
         spawnGroup.add(enemy);
@@ -201,7 +202,11 @@ function scorprain()
 function scorpipain()
 {
     playerHealth -= 1;
-    player.tint = 0x770000;
+
+    if (!game.painSfx.isPlaying)
+    {
+        game.painSfx.play('', 0, 0.2, false);
+    }
 
     if (playerHealth < 0)
     {
@@ -209,10 +214,25 @@ function scorpipain()
     }
 };
 
+function makeKey()
+{
+    endKey = game.add.sprite(2325, 405, 'key');
+    game.physics.arcade.enable(endKey);
+    endKey.anchor.x = 0.5;
+    endKey.anchor.y = 0.5;
+}
+
+function getKey()
+{
+    key = true;
+    endKey.kill();
+}
+
 function scalpelThrow()
 {
     if (scalpels > 0)
     {
+        game.scalpelSfx.play('', 0, 0.2, false);
         scalpels -= 1;
         scalpel = game.add.sprite(player.x, player.y - 42, 'scalpel');
         game.physics.arcade.enable(scalpel);
@@ -246,3 +266,14 @@ function done2()
 {
     isAttacking = false;
 };
+
+function bunbun()
+{
+    simon.animations.play('poof');
+}
+
+function saved()
+{
+    simon.frame = 21;
+    simonSaved = true;
+}

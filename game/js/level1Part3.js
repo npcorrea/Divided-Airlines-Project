@@ -25,6 +25,19 @@ Level1Part3.prototype =
         game.physics.arcade.enable(door);
         door.body.immovable = true;
 
+        //Make Simon
+        simon = game.add.sprite(530, 300, 'simon');
+        simon.anchor.x = 0.5;
+        simon.anchor.y = 0.5;
+        game.physics.arcade.enable(simon);
+        simon.body.setSize(125, 146, 50, 94);
+
+        //Simon Animation
+        let saveMe = simon.animations.add('poof', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 15, false);
+        saveMe.onComplete.add(saved, this);
+        simon.frame = 0;
+
         //Make Player
         player = game.add.sprite(600, game.world.height - 228, 'doctor');
         player.anchor.x = 0.5;
@@ -75,6 +88,11 @@ Level1Part3.prototype =
         if (!isAttacking)
         {
             player.tint = 0xFFFFFF;
+        }
+
+        if (isAttacking && !simonSaved)
+        {
+            game.physics.arcade.overlap(player, simon, bunbun, null, this);
         }
 
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp

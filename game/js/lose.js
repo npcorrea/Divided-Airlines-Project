@@ -6,6 +6,9 @@ Lose.prototype =
     {
         game.bgMusic.stop();
         game.battleMusic.stop();
+        game.bossMusic.stop();
+
+        game.loseMusic.play('', 0, 0.6, true);
 
         //Background
         game.deathScreen = game.add.image(0,0,'deathScreen');

@@ -101,6 +101,7 @@ function eAttack ()
         if ((isRight && (player.x < this.x)) || (isLeft && (this.x < player.x)))
         {
             this.enemyHealth -= 150;
+            game.hammerSfx.play('', 0, 0.2, false);
 
             if (player.x < this.x)
             {
@@ -122,6 +123,11 @@ function eAttack ()
     {
         playerHealth -= 50;
         player.tint = 0x770000;
+
+        if (!game.painSfx.isPlaying)
+        {
+            game.painSfx.play('', 0, 0.2, false);
+        }
     }
 
     if (playerHealth < 0)
