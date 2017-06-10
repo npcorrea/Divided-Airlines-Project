@@ -4,6 +4,7 @@ Win.prototype =
 {
     create: function()
     {
+        //Music
         game.bgMusic.stop();
         game.battleMusic.stop();
         game.bossMusic.stop();

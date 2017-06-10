@@ -7,14 +7,13 @@ Level1Part2.prototype =
         //Set some boundries
         game.world.setBounds(0,0,2400,600);
 
-        //Create Objects and their Physics
+        //Set background
         game.background = game.add.image(0,0,'background2');
 
         //Create a custom timer
         levelTimer = game.time.create();
 
-        //Create a delayed event 30s from now
-        //Change later. 30s for testing
+        //Create a delayed event
         levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 3 + Phaser.Timer.SECOND *60, this.endLevelTimer, this);
 
         //Start the timer
@@ -43,23 +42,12 @@ Level1Part2.prototype =
         player.body.setSize(120, 75, 70, 70);
         player.body.collideWorldBounds = true;
 
-        //Input manager
-        cursors = game.input.keyboard.createCursorKeys();
-
-        //Attack Keys
-        sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.E);
-        healing = game.input.keyboard.addKey(Phaser.Keyboard.R);
-
-        w = game.input.keyboard.addKey(Phaser.Keyboard.W);
-        a = game.input.keyboard.addKey(Phaser.Keyboard.A);
-        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        d = game.input.keyboard.addKey(Phaser.Keyboard.D);
-
+        //Make HUD
         HUD();
     },
     update: function()
     {
+        //Update HUD and health display
         updateHUD();
         updateHealth();
 
@@ -72,11 +60,13 @@ Level1Part2.prototype =
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
+        //Remove red tint if player isn't attacking
         if (!isAttacking)
         {
-            player.tint = 0xFFFFFF;
+            player.tint = 0xFFFFFF; //this prevents boss laser from turning player red, unsure how to fix
         }
 
+        //Set idle frame if player is not moving
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
              && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
         {
@@ -86,7 +76,7 @@ Level1Part2.prototype =
             }
         }
 
-        //Left
+        //Left movement
         if ((cursors.left.isDown || aKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = -150;
@@ -96,7 +86,7 @@ Level1Part2.prototype =
             isRight = false;
         }
 
-        //Right
+        //Right movement
         if ((cursors.right.isDown || dKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = 150;
@@ -106,7 +96,7 @@ Level1Part2.prototype =
             isLeft = false;
         }
 
-        //Up
+        //Up movement
         if ((cursors.up.isDown || wKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = -150;
@@ -123,7 +113,7 @@ Level1Part2.prototype =
             }
         }
 
-        //Down
+        //Down movement
         if ((cursors.down.isDown || sKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = 150;
@@ -307,11 +297,16 @@ Level1Part2.prototype =
                 game.bossMusic.play('', 0, 0.2, true);
 
                 lock4 = false;
+
+                //Create key to unlock cockpit
                 makeKey();
+
+                //Make it rain!
                 scorprain();
             }
         }
 
+        //Check for key pick-up
         if (!lock4Spawn)
         {
             game.physics.arcade.overlap(player, endKey, getKey, null, this);
@@ -353,9 +348,9 @@ Level1Part2.prototype =
             }
         }
 
+        //Release camera
         if (!lock2 && !lock3 && !lock4 && !lockBoss)
         {
-            //Release camera
             game.camera.deadzone = new Phaser.Rectangle(395, 400, 5, 200);
         }
     },
@@ -364,10 +359,6 @@ Level1Part2.prototype =
       //Prints out the timer
       if (levelTimer.running) {
               game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");
-          }
-      //If the timer reaches 0, print this out
-          else {
-
           }
       },
       endLevelTimer: function() {

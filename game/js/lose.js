@@ -13,6 +13,7 @@ Lose.prototype =
             align: 'center'
         }
 
+        //Music
         game.bgMusic.stop();
         game.battleMusic.stop();
         game.bossMusic.stop();
@@ -30,6 +31,7 @@ Lose.prototype =
     },
     update: function()
     {
+        //Restart if restart key was pressed
         if (qKey.justPressed(qKey))
         {
             again();

@@ -13,8 +13,5 @@ MainMenu.prototype =
 
         var instrText = new AddOption(game, 290, 430, 'Instructions', 'Instructions');
         game.add.existing(instrText);
-
-        //var sceneText = new AddOption(game, 290, 510, 'Cutscene', 'Cutscene');
-        //game.add.existing(sceneText);
     },
 };

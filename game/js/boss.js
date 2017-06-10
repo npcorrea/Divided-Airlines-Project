@@ -3,7 +3,6 @@ Boss.prototype = Object.create(Phaser.Sprite.prototype);
 Boss.prototype.constructor = Boss;
 
 var bSpeed = 100;
-var bossDefBound;
 var bossAtkRange = 5;
 
 function Boss(game,key, x, y, frame) {
@@ -14,11 +13,12 @@ function Boss(game,key, x, y, frame) {
       game.physics.arcade.enable(this);
       this.anchor.x = 0;
       this.anchor.y = .75;
-      this.bossHealth = 5000;
+      this.bossHealth = 10000;
       this.choice;
+      this.defBound;
 
       //Bounding box
-      bossDefBound = this.body.setSize(800, 235, 32, 222);
+      this.defBound = this.body.setSize(400, 200, 32, 222);
 
       //Animations //Frame 33 is idle
       this.animations.add('walk', [25, 26, 27, 28, 29, 30, 31, 32, 33], 8, true);
@@ -30,12 +30,19 @@ function Boss(game,key, x, y, frame) {
 
 Boss.prototype.update = function(){
 
+   //Check for stabbing
    game.physics.arcade.overlap(this, scalpel, bStab, null, this);
+
+   //Set bounds
+   this.defBound;
 
    if((player.y - this.y > bossAtkRange || player.y - this.y < -(bossAtkRange) || this.x < 200) && !bossAttacking) // if outside attack range
    {
       // play walking animation
       this.animations.play('walk');
+
+      //Also you're not in attack range anymore
+      bossAttacking = false;
 
       // move towards the player
       game.physics.arcade.moveToXY(this, 200, player.y, bSpeed);
@@ -50,7 +57,7 @@ Boss.prototype.update = function(){
       this.choice = game.rnd.integerInRange(0,100);
 
       //Play correct animation
-      if (this.choice < 75 && !bossAttacking)
+      if (this.choice < 60 && !bossAttacking)
       {
           bossAttacking = true;
           this.animations.play('sting');
@@ -59,7 +66,7 @@ Boss.prototype.update = function(){
               game.stingSfx.play('', 0, 0.2, false);
           }
       }
-      else if(this.choice >= 75 && !bossAttacking)
+      else if(this.choice >= 60 && !bossAttacking)
       {
           bossAttacking = true;
           this.animations.play('beam');
@@ -69,8 +76,9 @@ Boss.prototype.update = function(){
           }
       }
 
-      //Check for collision
-      game.physics.arcade.collide(this, player, bAttack, null, this);
+      //Check for overlaps
+      game.physics.arcade.overlap(this, player, bAttack, null, this);
+      game.physics.arcade.overlap(this, scalpel, bStab, null, this);
    }
 
    //Lock player
@@ -91,6 +99,7 @@ function bAttack ()
             game.hammerSfx.play('', 0, 0.2, false);
         }
 
+        //Kill boss when dead
         if(this.bossHealth < 0)
         {
             this.kill();
@@ -98,32 +107,7 @@ function bAttack ()
         }
     }
 
-    if(bossAttacking)
-    {
-        if (this.choice > 75 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-        {
-            playerHealth -= 10;
-
-            if (!game.painSfx.isPlaying)
-            {
-                game.painSfx.play('', 0, 0.2, false);
-            }
-            
-            player.tint = 0x770000;
-        }
-        else if (this.choice < 75 && player.x < 780 && (player.y - this.y < bossAtkRange || player.y - this.y > -(bossAtkRange)))
-        {
-            playerHealth -= 5;
-
-            if (!game.painSfx.isPlaying)
-            {
-                game.painSfx.play('', 0, 0.2, false);
-            }
-
-            player.tint = 0x770000;
-        }
-    }
-
+    //Kill player if not good
     if (playerHealth < 0)
     {
         game.state.start('Lose');
@@ -145,9 +129,42 @@ function bStab() {
 
 function bossDone()
 {
+    if(bossAttacking)
+    {
+        if (this.choice >= 75 && player.x >= 800) // if laser
+        {
+            player.tint = 0x770000;
+            playerHealth -= 200;
+
+            //OOF!
+            if (!game.painSfx.isPlaying)
+            {
+                game.painSfx.play('', 0, 0.2, false);
+            }
+        }
+        else if (this.choice < 75 && player.x < 800)
+        {
+            player.tint = 0x770000;
+            playerHealth -= 150;
+
+            //Player Knockback
+            game.add.tween(player).to( { x: '+200'}, 500, Phaser.Easing.Linear.None, true);
+
+            //OOF!
+            if (!game.painSfx.isPlaying)
+            {
+                game.painSfx.play('', 0, 0.2, false);
+            }
+        }
+    }
+
+    //Stop playing sfx
     game.laserSfx.stop();
     game.stingSfx.stop();
 
+    //We must know at all times if we can stab things
     game.physics.arcade.overlap(this, scalpel, bStab, null, this);
+
+    //Done with boss attack
     bossAttacking = false;
 };

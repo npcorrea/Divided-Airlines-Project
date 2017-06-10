@@ -1,7 +1,6 @@
 function HUD()
 {
   // h1-h10 represent each heart
-  //This could be made into a group to reduce code
   h1 = this.game.add.sprite(32, 32, 'heart');
   h1.cropEnabled = true;
   h1.fixedToCamera = true;
