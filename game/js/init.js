@@ -29,6 +29,11 @@ var aliveEnemies = 0;
 var playerHealth = 10000;
 var pills = 3;
 var scalpels = 5;
+var HUDFont = {font: 'Cuprum', fontSize: '24px', fill: '#000000'};
+var simonSaved = false;
+
+var waveSize = 5;
+var aliveEnemies = 0;
 
 //Lock vars
 var lock1 = false;
