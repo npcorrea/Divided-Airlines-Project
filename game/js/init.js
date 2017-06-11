@@ -2,6 +2,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO);
 
 //Global Variables
+//Sprite vars
 var player;
 var playButton;
 var restartButton;
@@ -10,13 +11,21 @@ var enemy;
 var sAttack;
 var emitter;
 var scalpel;
+var spawnGroup;
+var endKey;
+
+//Trigger vars
 var isAttacking = false;
 var isThrowing = false;
 var isLeft = false;
 var isRight = false;
 var bossAttacking = false;
-var spawnGroup;
 var key = false;
+var simonSaved = false;
+var waveSize = 5;
+var aliveEnemies = 0;
+
+//Resource vars
 var playerHealth = 10000;
 var pills = 3;
 var scalpels = 5;
@@ -26,6 +35,7 @@ var simonSaved = false;
 var waveSize = 5;
 var aliveEnemies = 0;
 
+//Lock vars
 var lock1 = false;
 var lock1Pending = true;
 var lock1Spawn = true;
@@ -46,6 +56,8 @@ var lockBoss = false;
 var lockBossPending = true;
 var lockBossSpawn = true;
 
+//HUD vars
+var HUDFont = {font: 'Cuprum', fontSize: '24px', fill: '#000000'};
 var healthBar;
 var scalpeIcon;
 var scalpelText;
@@ -59,6 +71,7 @@ var rangedAtkIcon;
 var rangedAtkText;
 var playerMaxHealth = 10000;
 
+//Cutscene vars
 var text1 = [
     "They beat me up... humiliated me... denied me a seat.",
     "But now now I'm back and I'm taking matters into ",
@@ -102,49 +115,3 @@ game.state.add('Lose', Lose);
 
 //Start Preloader
 game.state.start('Load');
-
-//Call this to go to the losing state
-function goToLoseState(){
-  game.state.start('Lose');
-}
-
-// Replay the game
-function again()
-{
-    //Reset Variables
-    isAttacking = false;
-    isThrowing = false;
-    isLeft = false;
-    isRight = false;
-    bossAttacking = false;
-    key = false;
-    playerHealth = 10000;
-    pills = 3;
-    scalpels = 5;
-
-    waveSize = 5;
-    aliveEnemies = 0;
-
-    lock1 = false;
-    lock1Pending = true;
-    lock1Spawn = true;
-
-    lock2 = false;
-    lock2Pending = true;
-    lock2Spawn = true;
-
-    lock3 = false;
-    lock3Pending = true;
-    lock3Spawn = true;
-
-    lock4 = false;
-    lock4Pending = true;
-    lock4Spawn = true;
-
-    lockBoss = false;
-    lockBossPending = true;
-    lockBossSpawn = true;
-
-    //Move to MainMenu
-    game.state.start('Level1Part1');
-}

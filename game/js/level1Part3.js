@@ -7,14 +7,13 @@ Level1Part3.prototype =
         //Set some boundries
         game.world.setBounds(0,0,800,600);
 
-        //Create Objects and their Physics
+        //Set background
         game.background = game.add.image(0,0,'background3');
 
         //Create a custom timer
         levelTimer = game.time.create();
 
-        //Create a delayed event 30s from now
-        //Change later. 30s for testing
+        //Create a delayed event
         levelTimerEvent = levelTimer.add(Phaser.Timer.MINUTE * 0 + Phaser.Timer.SECOND *30, this.endLevelTimer, this);
 
         //Start the timer
@@ -24,6 +23,19 @@ Level1Part3.prototype =
         door = game.add.sprite(135, game.world.height - 280, 'door');
         game.physics.arcade.enable(door);
         door.body.immovable = true;
+
+        //Make Simon
+        simon = game.add.sprite(530, 300, 'simon');
+        simon.anchor.x = 0.5;
+        simon.anchor.y = 0.5;
+        game.physics.arcade.enable(simon);
+        simon.body.setSize(125, 146, 50, 94);
+
+        //Simon Animation
+        let saveMe = simon.animations.add('poof', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 15, false);
+        saveMe.onComplete.add(saved, this);
+        simon.frame = 0;
 
         //Make Player
         player = game.add.sprite(600, game.world.height - 228, 'doctor');
@@ -44,23 +56,12 @@ Level1Part3.prototype =
         player.body.setSize(120, 75, 70, 70);
         player.body.collideWorldBounds = true;
 
-        //Input manager
-        cursors = game.input.keyboard.createCursorKeys();
-
-        //Attack Keys
-        sAttack = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        lAttack = game.input.keyboard.addKey(Phaser.Keyboard.E);
-        healing = game.input.keyboard.addKey(Phaser.Keyboard.R);
-
-        w = game.input.keyboard.addKey(Phaser.Keyboard.W);
-        a = game.input.keyboard.addKey(Phaser.Keyboard.A);
-        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        d = game.input.keyboard.addKey(Phaser.Keyboard.D);
-
+        //Make HUD
         HUD();
     },
     update: function()
     {
+        //Update HUD and health display
         updateHUD();
         updateHealth();
 
@@ -72,11 +73,13 @@ Level1Part3.prototype =
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
-        if (!isAttacking)
+        //Trigger to save Simon
+        if (isAttacking && !simonSaved)
         {
-            player.tint = 0xFFFFFF;
+            game.physics.arcade.overlap(player, simon, bunbun, null, this);
         }
 
+        //Set idle frame if player is not moving
         if (cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp
              && wKey.isUp && aKey.isUp && sKey.isUp && dKey.isUp)
         {
@@ -86,7 +89,7 @@ Level1Part3.prototype =
             }
         }
 
-        //Left
+        //Left movement
         if ((cursors.left.isDown || aKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = -150;
@@ -96,7 +99,7 @@ Level1Part3.prototype =
             isRight = false;
         }
 
-        //Right
+        //Right movement
         if ((cursors.right.isDown || dKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.x = 150;
@@ -106,7 +109,7 @@ Level1Part3.prototype =
             isLeft = false;
         }
 
-        //Up
+        //Up movement
         if ((cursors.up.isDown || wKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = -150;
@@ -123,7 +126,7 @@ Level1Part3.prototype =
             }
         }
 
-        //Down
+        //Down movement
         if ((cursors.down.isDown || sKey.isDown) && !isAttacking && !isThrowing)
         {
             player.body.velocity.y = 150;
@@ -188,15 +191,10 @@ Level1Part3.prototype =
     if (levelTimer.running) {
             game.debug.text("Time left: "+this.formatLevelTime(Math.round((levelTimerEvent.delay - levelTimer.ms) / 1000)), 32, 32, "#000000");
         }
-    //If the timer reaches 0, print this out
-        else {
-
-        }
     },
     endLevelTimer: function() {
         //This stops the timer when the delayed event triggers
         levelTimer.stop();
-
         goToLoseState();
     },
     formatLevelTime: function(s) {

@@ -13,8 +13,12 @@ Win.prototype =
             align: 'center'
         }
         
+        //Music
         game.bgMusic.stop();
         game.battleMusic.stop();
+        game.bossMusic.stop();
+
+        game.winMusic.play('', 0, 0.2, true);
 
         //Prompt for Replay
         game.add.text(200, 170, "You won! Press Q to restart", textStyle);
