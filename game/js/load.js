@@ -20,8 +20,6 @@ Load.prototype =
         game.load.image('deathScreen', 'assets/img/DeathScreen.png');
 
         //Load Game Sprites
-        game.load.image('play', 'assets/img/Play.png');
-        game.load.image('rewind', 'assets/img/Rewind.png');
         game.load.image('door', 'assets/img/TheBESTdoor.png');
         game.load.image('scorp', 'assets/img/babyScorpion.png');
         game.load.image('scalpel', 'assets/img/scalpel.png');
