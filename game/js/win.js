@@ -23,10 +23,10 @@ Win.prototype =
         if(simonSaved == true)
         {
            game.add.text(260, 230, "Simon was saved!", textStyle);
-           simon = game.add.sprite(300, 250, 'simon');
-           simon.animations.add('simon', [17, 18, 19, 20, 21, 22], 15, false);
+           simon = game.add.sprite(270, 270, 'simon');
+           simon.animations.add('simon', [16, 17, 18, 19, 20, 21], 15, false);
            simon.animations.play('simon');
-           simon.frame = 22;
+           simon.frame = 21;
         }
         else
         {
