@@ -91,7 +91,7 @@ Load.prototype =
 
         //Move to MainMenu
         setTimeout(function () {
-            game.state.start('Win');
+            game.state.start('MainMenu');
         }, 1000);
 
     }
