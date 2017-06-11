@@ -72,6 +72,7 @@ game.state.add('Load', Load);
 game.state.add('Cutscene', Cutscene);
 game.state.add('MainMenu', MainMenu);
 game.state.add('Instructions', Instructions);
+game.state.add('Credits', Credits);
 game.state.add('Level1Part1', Level1Part1);
 game.state.add('Level1Part2', Level1Part2);
 game.state.add('Win', Win);
