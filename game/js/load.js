@@ -40,6 +40,7 @@ Load.prototype =
         game.load.spritesheet('FA', 'assets/img/FAWalkAnimRight.png', 256, 256);
         game.load.spritesheet('SG', 'assets/img/SGWalkAnimRight.png', 256, 256);
         game.load.spritesheet('captain', 'assets/img/CaptainSpritesheet.png', 1024, 512);
+        game.load.spritesheet('simon', 'assets/img/Simon.png', 256, 256);
 
         //Load Music
         game.load.audio('menuMusic', ['assets/audio/menuMusic.mp3', 'assets/audio/menuMusic.ogg']);
@@ -90,7 +91,7 @@ Load.prototype =
 
         //Move to MainMenu
         setTimeout(function () {
-            game.state.start('MainMenu');
+            game.state.start('Win');
         }, 1000);
 
     }
