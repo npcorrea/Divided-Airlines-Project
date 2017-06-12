@@ -27,8 +27,6 @@ Instructions.prototype =
 		 game.add.sprite(120, 350, 'meleeAtkButton');
 		 game.add.sprite(260, 390, 'pillButton');
 		 game.add.sprite(260, 450, 'rangedAtkButton');;
-		 //game.add.sprite(440, 410, 'pillIcon');
-		 //game.add.sprite(600, 455, 'scalpelIcon');
 
 		var back = new AddOption(game, 30, 500, 'Back', 'MainMenu');
         game.add.existing(back);
